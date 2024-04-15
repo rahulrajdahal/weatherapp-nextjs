@@ -5,6 +5,7 @@ import Image from 'next/image';
 import React, { useCallback, useEffect, useState } from 'react';
 import Input from '../Input/Input';
 import { useRouter, usePathname, useSearchParams } from 'next/navigation';
+import toast from 'react-hot-toast';
 
 export default function SearchInput() {
   const router = useRouter();
@@ -26,26 +27,37 @@ export default function SearchInput() {
     [searchParams]
   );
 
-  useEffect(() => {
-    if (suggestions.suggestions.length > 0) {
-      setSuggestions((prev) => ({ ...prev, isOpen: true }));
-    }
-  }, [suggestions.suggestions.length]);
-
   const handleSearch = useCallback(
     async (value: string | number) => {
       if (value !== '') {
         const resp = await fetch(
-          `https://api.mapbox.com/geocoding/v5/mapbox.places/${value}.json?types=place%2Cpostcode%2Caddress&limit=5&access_token=${process.env.NEXT_PUBLIC_MAPBOX_APIKEY}`
+          `https://api.weatherapi.com/v1/search.json?q=${value}&key=${process.env.NEXT_PUBLIC_WEATHER_APIKEY}`
         );
 
-        const data = await resp.json();
-        let temp: any = [];
-        data.features.map((feature: any) => {
-          temp.push(feature);
-        });
+        const respJson = await resp.json();
 
-        setSuggestions((prev) => ({ ...prev, suggestions: temp }));
+        if (respJson.error) {
+          return toast.error(respJson.error.message);
+        }
+
+        setSuggestions((prev) => ({
+          isOpen: true,
+          suggestions: respJson.map(
+            (res: {
+              id: number;
+              region: string;
+              name: string;
+              country: string;
+              url: string;
+            }) => ({
+              id: res.id,
+              name: res.region
+                ? `${res.name},${res.region},${res.country}`
+                : `${res.name},${res.country}`,
+              url: res.url,
+            })
+          ),
+        }));
         router.push(pathname + '?' + createQueryString('q', value as string));
       }
     },
@@ -71,8 +83,8 @@ export default function SearchInput() {
     }
   };
 
-  const handleSuggestionOnClick = (place_name: string) => {
-    router.push(pathname + '?' + createQueryString('q', place_name));
+  const handleSuggestionOnClick = (name: string) => {
+    router.push(pathname + '?' + createQueryString('q', name));
     setSuggestions((prev) => ({ ...prev, isOpen: false }));
   };
 
@@ -89,6 +101,7 @@ export default function SearchInput() {
         <span className='relative'>
           <Input
             type='search'
+            debounce={800}
             value={searchParams.get('q') ?? ''}
             onChange={handleSearch}
             className='border-none bg-transparent outline-none'
@@ -99,11 +112,11 @@ export default function SearchInput() {
               {suggestions.suggestions.map((suggestion: any) => (
                 <li
                   key={suggestion.id}
-                  onClick={() => handleSuggestionOnClick(suggestion.place_name)}
+                  onClick={() => handleSuggestionOnClick(suggestion.url)}
                   className='hover:bg-grey-300 whitespace-nowrap rounded-sm bg-white
                 px-4 hover:cursor-pointer'
                 >
-                  <p>{suggestion.place_name}</p>
+                  <p>{suggestion.name}</p>
                 </li>
               ))}
             </ul>
