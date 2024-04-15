@@ -1,11 +1,22 @@
-# [Next Starter](https://github.com/rahulrajdahal/next-starter). Starter For Next App Router
+# [WeatherApp](https://github.com/rahulrajdahal/weatherapp-nextjs). Visualize your forecast today.
 
-## 🏗 Installation
+Get information about the weather today.
 
-### 1. create next app
+- 24 hour forecast
+- Humidity, temperature and Wind speed.
+- Find the forecast at any region.
+
+## Preview
+
+[![WeatherApp](./screenshots/weatherApp.png)](https://weatherapp-nextjs-pi.vercel.app/)
+![WeatherApp](./screenshots/weatherApp-weather.png)
+
+## 🏗 Development Guide
+
+### 1. clone the repository
 
 ```sh
-npx create-next-app [project-name] -e https://github.com/rahulrajdahal/next-starter
+git clone https://github.com/rahulrajdahal/weatherapp-nextjs.git
 ```
 
 ### 2. Install Dependencies
@@ -13,22 +24,20 @@ npx create-next-app [project-name] -e https://github.com/rahulrajdahal/next-star
 #### npm
 
 ```sh
-cd [project-name] && npm install
+cd weatherapp-nextjs && npm install
 ```
 
-### 💾 Connect to Database
+### 3. Connect to your API 💾
 
-// schema.prisma
+Creact a **.env** file and add the following
+
+// .env
 
 ```sh
-provider = "prisma-database-provider"
+NEXT_PUBLIC_WEATHER_APIKEY='your weather api key'
 ```
 
-### 4. Update env
-
-update the .env.example file to .env and append key value pairs.
-
-### 5. Run development server
+### 4. Run development server
 
 ```sh
 npm run dev
@@ -67,11 +76,6 @@ Inside of project [Next Starter](https://github.com/rahulrajdahal/next-starter),
 │   │   └── e2etest.cy.ts
 │   ├── fixtures
 │   └── support
-├── hooks/
-│   └── index.ts
-├── utils/
-│   ├── helpers.ts
-│   └── routes.ts
 └── package.json
 ```
 

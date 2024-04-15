@@ -1,9 +1,6 @@
 'use client';
 
-import { TemperatureDisplay } from '@/components';
-import { myImageLoader } from '@/utils/imageLoader';
 import moment from 'moment';
-import Image from 'next/image';
 import React from 'react';
 
 export type ICurrentForecast = {

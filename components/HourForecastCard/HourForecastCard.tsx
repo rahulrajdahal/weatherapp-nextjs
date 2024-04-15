@@ -1,8 +1,6 @@
 'use client';
 
 import { dropIcon, windIcon } from '@/assets/icons';
-import { myImageLoader } from '@/utils/imageLoader';
-import { Cloud, Wine } from 'meistericons-react';
 import moment from 'moment';
 import Image from 'next/image';
 import React from 'react';

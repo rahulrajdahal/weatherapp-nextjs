@@ -1,10 +1,7 @@
 'use client';
 
 import { HourForecastCard, TemperatureDisplay } from '@/components';
-import { myImageLoader } from '@/utils/imageLoader';
-import Image from 'next/image';
 import React from 'react';
-import * as Tabs from '@radix-ui/react-tabs';
 import moment from 'moment';
 import { ICurrentForecastResp } from './page';
 
