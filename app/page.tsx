@@ -7,6 +7,7 @@ import moment from 'moment';
 import CurrentForecast, { ICurrentForecast } from './CurrentForecast';
 import HourlyForecast from './HourlyForecast';
 import { useSearchParams } from 'next/navigation';
+import toast from 'react-hot-toast';
 
 export interface ICurrentForecastResp
   extends Omit<ICurrentForecast, 'temp' | 'windSpeed'> {
@@ -58,6 +59,10 @@ export default function Home() {
     }
 
     const respJson = await resp.json();
+
+    if (respJson.error) {
+      return toast.error(respJson.error.message);
+    }
 
     setCurrentForecast(respJson.current);
     setCurrentLocation(respJson.location);
