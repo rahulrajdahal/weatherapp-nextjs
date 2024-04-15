@@ -1,4 +1,3 @@
-import { Pin, Search } from 'meistericons-react';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import React, { ChangeEvent, useCallback } from 'react';
 import Input from '../Input/Input';
