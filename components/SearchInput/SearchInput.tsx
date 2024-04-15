@@ -2,10 +2,10 @@
 
 import { pinIcon, searchIcon } from '@/assets/icons';
 import Image from 'next/image';
-import React, { useCallback, useEffect, useState } from 'react';
-import Input from '../Input/Input';
-import { useRouter, usePathname, useSearchParams } from 'next/navigation';
+import { usePathname, useRouter, useSearchParams } from 'next/navigation';
+import { useCallback, useState } from 'react';
 import toast from 'react-hot-toast';
+import Input from '../Input/Input';
 
 export default function SearchInput() {
   const router = useRouter();

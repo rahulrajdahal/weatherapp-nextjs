@@ -1,7 +1,6 @@
 'use client';
 
-import { HourForecastCard, TemperatureDisplay } from '@/components';
-import React from 'react';
+import { HourForecastCard } from '@/components';
 import moment from 'moment';
 import { ICurrentForecastResp } from './page';
 

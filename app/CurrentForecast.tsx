@@ -1,7 +1,6 @@
 'use client';
 
 import moment from 'moment';
-import React from 'react';
 
 export type ICurrentForecast = {
   windSpeed: number;

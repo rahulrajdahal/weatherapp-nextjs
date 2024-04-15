@@ -1,13 +1,13 @@
 'use client';
 
-import { Suspense, useCallback, useEffect, useMemo, useState } from 'react';
-import { HourForecastCard, Navbar, TemperatureDisplay } from '@/components';
+import { Navbar } from '@/components';
+import { Suspense, useCallback, useEffect, useState } from 'react';
 
 import moment from 'moment';
-import CurrentForecast, { ICurrentForecast } from './CurrentForecast';
-import HourlyForecast from './HourlyForecast';
 import { useSearchParams } from 'next/navigation';
 import toast from 'react-hot-toast';
+import CurrentForecast, { ICurrentForecast } from './CurrentForecast';
+import HourlyForecast from './HourlyForecast';
 
 export interface ICurrentForecastResp
   extends Omit<ICurrentForecast, 'temp' | 'windSpeed'> {

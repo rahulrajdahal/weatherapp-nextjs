@@ -3,7 +3,6 @@
 import { dropIcon, windIcon } from '@/assets/icons';
 import moment from 'moment';
 import Image from 'next/image';
-import React from 'react';
 
 export const initialProps = {
   condition: {
@@ -34,7 +33,7 @@ export default function HourForecastCard({
   return (
     <div
       key={time}
-      className={`${isCurrentHour ? 'text-grey-900 bg-grey-200' : 'text-grey-400 border-grey-200 border'} flex w-fit flex-col items-center rounded-[6.25rem] px-6 py-8`}
+      className={`${isCurrentHour ? 'bg-grey-200 text-grey-900' : 'border border-grey-200 text-grey-400'} flex w-fit flex-col items-center rounded-[6.25rem] px-6 py-8`}
       title={text}
     >
       <p className=' text-sm font-medium -tracking-[0.035rem]'>

@@ -1,8 +1,3 @@
-import { usePathname, useRouter, useSearchParams } from 'next/navigation';
-import React, { ChangeEvent, useCallback } from 'react';
-import Input from '../Input/Input';
-import Image from 'next/image';
-import { pinIcon, searchIcon } from '@/assets/icons';
 import SearchInput from '../SearchInput/SearchInput';
 
 export default function Navbar() {
