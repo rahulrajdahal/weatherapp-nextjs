@@ -16,8 +16,10 @@
     "component:headless": "cypress run --component"
   },
   "dependencies": {
+    "@meistericons/react": "^0.0.1",
     "@prisma/client": "latest",
     "@radix-ui/react-tabs": "^1.0.4",
+    "@rahulrajdahal/mn-kits": "^0.0.10",
     "cloudinary": "^1.41.0",
     "framer-motion": "^10.18.0",
     "jose": "^4.15.4",

@@ -5,12 +5,18 @@ settings:
   excludeLinksFromLockfile: false
 
 dependencies:
+  '@meistericons/react':
+    specifier: ^0.0.1
+    version: 0.0.1(react-dom@18.2.0)(react@18.2.0)
   '@prisma/client':
     specifier: latest
     version: 5.12.1(prisma@5.12.1)
   '@radix-ui/react-tabs':
     specifier: ^1.0.4
     version: 1.0.4(@types/react-dom@18.2.25)(@types/react@18.2.78)(react-dom@18.2.0)(react@18.2.0)
+  '@rahulrajdahal/mn-kits':
+    specifier: ^0.0.10
+    version: 0.0.10(react-dom@18.2.0)(react@18.2.0)(typescript@5.4.5)
   cloudinary:
     specifier: ^1.41.0
     version: 1.41.3
@@ -2215,6 +2221,16 @@ packages:
       react: 18.2.0
     dev: true
 
+  /@meistericons/react@0.0.1(react-dom@18.2.0)(react@18.2.0):
+    resolution: {integrity: sha512-TyOL16kJqUjW2sfsKglIvgpivkkPLn7SnNhQCiVEfCFHKCh5eTNjbzJzXpqmRqY6c3sqlgrgHG8C0EIbde5GCg==}
+    peerDependencies:
+      react: ^18.2.0
+      react-dom: ^18.2.0
+    dependencies:
+      react: 18.2.0
+      react-dom: 18.2.0(react@18.2.0)
+    dev: false
+
   /@ndelangen/get-tarball@3.0.9:
     resolution: {integrity: sha512-9JKTEik4vq+yGosHYhZ1tiH/3WpUS0Nh0kej4Agndhox8pAdWhEx5knFVRcb/ya9knCRCs1rPxNrSXTDdfVqpA==}
     dependencies:
@@ -3023,6 +3039,19 @@ packages:
     dependencies:
       '@babel/runtime': 7.24.4
     dev: true
+
+  /@rahulrajdahal/mn-kits@0.0.10(react-dom@18.2.0)(react@18.2.0)(typescript@5.4.5):
+    resolution: {integrity: sha512-QrYjSc+muaFFdfyEypnDn5LdVTk1dROOyzpcX46dlWOlvWflKWD2dtnVeS5tczYuM6btzkMakacC5oGWUPZRYQ==}
+    peerDependencies:
+      react: ^18.2.0
+      react-dom: ^18.2.0
+    dependencies:
+      meistericons-react: 1.0.17(react@18.2.0)(typescript@5.4.5)
+      react: 18.2.0
+      react-dom: 18.2.0(react@18.2.0)
+    transitivePeerDependencies:
+      - typescript
+    dev: false
 
   /@rushstack/eslint-patch@1.10.2:
     resolution: {integrity: sha512-hw437iINopmQuxWPSUEvqE56NCPsiU8N4AYtfHmJFckclktzK9YQJieD3XkDCDH4OjL+C7zgPUh73R/nrcHrqw==}
