@@ -6,7 +6,7 @@ import Image from 'next/image';
 import React from 'react';
 import * as Tabs from '@radix-ui/react-tabs';
 import moment from 'moment';
-import { ICurrentForecastResp, ICurrentLocationResp } from './page';
+import { ICurrentForecastResp } from './page';
 
 export default function HourlyForecast({
   hourlyForecasts,
@@ -23,6 +23,11 @@ export default function HourlyForecast({
         {hourlyForecasts.map((hourlyForecast) => (
           <HourForecastCard
             key={hourlyForecast.time}
+            isCurrentHour={
+              moment(hourlyForecast.time).format('L') ===
+                moment().format('L') &&
+              moment(hourlyForecast.time).format('HH') === moment().format('HH')
+            }
             condition={hourlyForecast.condition}
             humidity={hourlyForecast.humidity}
             windSpeed={hourlyForecast.wind_kph}

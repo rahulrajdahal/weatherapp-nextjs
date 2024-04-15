@@ -15,6 +15,7 @@ export const initialProps = {
   windSpeed: 15.2,
   temp: 20.2,
   time: '2024-04-15 00:00',
+  isCurrentHour: true,
 };
 
 export default function HourForecastCard({
@@ -23,21 +24,19 @@ export default function HourForecastCard({
   condition: { text },
   humidity,
   temp,
+  isCurrentHour,
 }: {
   windSpeed: number;
   time: string;
   condition: { text: string };
   temp: number;
   humidity: number;
+  isCurrentHour: boolean;
 }) {
-  const isCurrentHour =
-    moment(time).format('L') === moment().format('L') &&
-    moment(time).format('HH') === moment().format('HH');
-
   return (
     <div
       key={time}
-      className={`${isCurrentHour ? 'text-grey-900 bg-grey-200' : 'text-grey-400 border-grey-200 border'} flex flex-col items-center rounded-[6.25rem] px-6 py-8 lg:w-fit`}
+      className={`${isCurrentHour ? 'text-grey-900 bg-grey-200' : 'text-grey-400 border-grey-200 border'} flex w-fit flex-col items-center rounded-[6.25rem] px-6 py-8`}
       title={text}
     >
       <p className=' text-sm font-medium -tracking-[0.035rem]'>
