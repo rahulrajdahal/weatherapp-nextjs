@@ -50,7 +50,7 @@ export default function HourForecastCard({
         <span className='flex items-center gap-2'>
           <Image
             src={dropIcon}
-            alt='search'
+            alt='humidity'
             width={24}
             height={24}
             className='h-6 w-6'
@@ -60,7 +60,7 @@ export default function HourForecastCard({
         <span className='flex items-center gap-2'>
           <Image
             src={windIcon}
-            alt='search'
+            alt='windSpeed'
             width={24}
             height={24}
             className='h-6 w-6'

@@ -12,9 +12,7 @@ export default function Input({
 } & Omit<React.InputHTMLAttributes<HTMLInputElement>, 'onChange'>) {
   const [value, setValue] = React.useState(initialValue);
 
-  React.useEffect(() => {
-    setValue(initialValue);
-  }, [initialValue]);
+  React.useEffect(() => setValue(initialValue), [initialValue]);
 
   React.useEffect(() => {
     const timeout = setTimeout(() => {

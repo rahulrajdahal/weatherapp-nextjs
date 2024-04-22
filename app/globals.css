@@ -1,6 +1,14 @@
+html,
+:root,
+*,
+body {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
 @tailwind base;
 @tailwind components;
-
 @tailwind utilities;
 
 @layer base {
@@ -22,13 +30,4 @@
   .no-scrollbar {
     scrollbar-width: none;
   }
-}
-
-html,
-:root,
-*,
-body {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
 }
