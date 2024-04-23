@@ -4,7 +4,7 @@ import moment from 'moment';
 
 export type ICurrentForecast = {
   windSpeed: number;
-  time: string;
+  last_updated: string;
   condition: { text: string; icon: string };
   temp: number;
   humidity: number;
@@ -13,7 +13,7 @@ export type ICurrentForecast = {
 
 export default function CurrentForecast({
   windSpeed,
-  time,
+  last_updated,
   condition: { text, icon },
   humidity,
   temp,
@@ -46,7 +46,7 @@ export default function CurrentForecast({
         </div>
 
         <div className='absolute bottom-0 flex items-center text-2xl font-medium leading-[auto] text-[#F8FBFF] md:bottom-5 md:text-[32px]'>
-          {moment(time).format('LT')} {tz_id}
+          {moment(last_updated).format('LT')} {tz_id}
         </div>
       </div>
       <div className='absolute left-4 top-4 w-full rounded-tr-[32px] bg-gradient-to-b from-[#84FAB0] to-[#8FD3F4] opacity-40'></div>

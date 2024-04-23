@@ -2,12 +2,12 @@
 
 import { HourForecastCard } from '@/components';
 import moment from 'moment';
-import { ICurrentForecastResp } from './page';
+import { IHourlyForeCastResp } from './page';
 
 export default function HourlyForecast({
   hourlyForecasts,
 }: {
-  hourlyForecasts: ICurrentForecastResp[];
+  hourlyForecasts: IHourlyForeCastResp[];
 }) {
   return (
     <>

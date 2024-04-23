@@ -5,7 +5,7 @@ import Image from 'next/image';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { useCallback, useState } from 'react';
 import toast from 'react-hot-toast';
-import Input from '../Input/Input';
+import { Input } from '..';
 
 export default function SearchInput() {
   const router = useRouter();

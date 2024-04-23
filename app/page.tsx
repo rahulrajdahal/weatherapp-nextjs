@@ -19,6 +19,12 @@ export interface ICurrentLocationResp extends Pick<ICurrentForecast, 'tz_id'> {
   name: string;
   country: string;
 }
+export interface IHourlyForeCastResp
+  extends Omit<ICurrentForecastResp, 'temp' | 'windSpeed' | 'last_updated'> {
+  name: string;
+  country: string;
+  time: string;
+}
 
 export default function Home() {
   const searchParams = useSearchParams();
@@ -28,7 +34,7 @@ export default function Home() {
   const [currentLocation, setCurrentLocation] =
     useState<ICurrentLocationResp>();
 
-  const [hourlyForcasts, setHourlyForcasts] = useState<ICurrentForecastResp[]>(
+  const [hourlyForcasts, setHourlyForcasts] = useState<IHourlyForeCastResp[]>(
     []
   );
 
@@ -46,7 +52,7 @@ export default function Home() {
     }
   }, []);
 
-  const getForcast = useCallback(async () => {
+  const getForecast = useCallback(async () => {
     let resp;
     if (searchParams.get('q')) {
       resp = await fetch(
@@ -68,21 +74,24 @@ export default function Home() {
     setCurrentLocation(respJson.location);
     setHourlyForcasts(
       respJson.forecast.forecastday
-        .map((forecastday: { hour: ICurrentForecastResp[] }) =>
-          forecastday.hour.filter((hour) => {
-            if (moment(hour.time).format('L') === moment().format('L')) {
-              return moment(hour.time).format('HH') >= moment().format('HH');
-            }
-            return hour;
-          })
+        .map(
+          (forecastday: {
+            hour: (ICurrentForecastResp & { time: string })[];
+          }) =>
+            forecastday.hour.filter((hour) => {
+              if (moment(hour.time).format('L') === moment().format('L')) {
+                return moment(hour.time).format('HH') >= moment().format('HH');
+              }
+              return hour;
+            })
         )
         .flat()
     );
   }, [location.latitude, location.longitude, searchParams]);
 
   useEffect(() => {
-    getForcast();
-  }, [getForcast]);
+    getForecast();
+  }, [getForecast]);
 
   return (
     <div className='bg-image lg:h-screen'>
@@ -96,7 +105,7 @@ export default function Home() {
                 condition={currentForecast.condition}
                 humidity={currentForecast.humidity}
                 temp={currentForecast.temp_c}
-                time={currentForecast.time}
+                last_updated={currentForecast.last_updated}
                 tz_id={currentLocation.tz_id}
                 windSpeed={currentForecast.wind_kph}
               />

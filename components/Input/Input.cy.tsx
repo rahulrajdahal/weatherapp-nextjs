@@ -2,21 +2,27 @@ import Input from './Input';
 
 describe('<Input />', () => {
   it('renders', () => {
-    cy.mount(<Input value={''} onChange={() => console.log('value')} />);
+    renderInput();
   });
+
   it('should update input with desired debounce', () => {
-    const debounce = 500;
     const inputText = 'test the debounce input';
 
-    cy.mount(
-      <Input
-        value={''}
-        onChange={() => console.log('value')}
-        debounce={debounce}
-      />
-    );
+    renderInput();
+
     cy.get('input').type(inputText);
-    cy.wait(debounce);
+    cy.wait(500);
+    cy.get('@onChangeSpy').should('have.been.calledWith', inputText);
     cy.get('input').should('contain.value', inputText);
   });
 });
+
+const renderInput = () => {
+  const value = '';
+  const onChangeSpy = cy.spy().as('onChangeSpy');
+  const debounce = 500;
+
+  return cy.mount(
+    <Input value={value} onChange={onChangeSpy} debounce={debounce} />
+  );
+};
