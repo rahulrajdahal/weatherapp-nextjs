@@ -26,9 +26,12 @@ jobs:
           NEXT_PUBLIC_WEATHER_APIKEY: ${{secrets.NEXT_PUBLIC_WEATHER_APIKEY}}
         run: |
           touch cypress.env.json
-          echo {NEXT_PUBLIC_WEATHER_APIKEY="${NEXT_PUBLIC_WEATHER_APIKEY}"} >> cpyress.env.json
+          echo { >> cpyress.env.json
+          echo NEXT_PUBLIC_WEATHER_APIKEY="${NEXT_PUBLIC_WEATHER_APIKEY}" >> cpyress.env.json
+          echo } >> cpyress.env.json
 
-          cat cypress.env.json
+          echo "cat cypress env"
+          cat eypress.env.json
         shell: bash
       - name: Cypress run
         uses: cypress-io/github-action@v6
