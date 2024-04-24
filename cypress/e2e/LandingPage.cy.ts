@@ -37,7 +37,7 @@ const fetchForecast = () => {
   cy.visit('/');
 
   cy.intercept(
-    `https://api.weatherapi.com/v1/forecast.json?q=${latitude},${longitude}&days=2&key=${Cypress.env('NEXT_PUBLIC_WEATHER_APIKEY')}`
+    `https://api.weatherapi.com/v1/forecast.json?q=${latitude},${longitude}&days=2&key=${Cypress.env('CYPRESS_NEXT_PUBLIC_WEATHER_APIKEY')}`
   ).as('getForecast');
 
   cy.wait('@getForecast')
