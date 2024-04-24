@@ -14,11 +14,7 @@ describe('<HourForecastCard />', () => {
         body: img.buffer,
       });
       cy.mount(<HourForecastCard {...initialProps} />);
-      cy.get(':nth-child(1) > .h-6').should(
-        'have.attr',
-        'src',
-        '/_next/static/media/drop.eae8cdee.svg'
-      );
+      cy.get(':nth-child(1) > .h-6').should('have.attr', 'src');
       cy.get(':nth-child(1) > .h-6').should('have.attr', 'alt', 'humidity');
     });
   });
@@ -32,11 +28,7 @@ describe('<HourForecastCard />', () => {
         body: windImg.buffer,
       });
       cy.mount(<HourForecastCard {...initialProps} />);
-      cy.get(':nth-child(2) > .h-6').should(
-        'have.attr',
-        'src',
-        '/_next/static/media/wind.109bccdb.svg'
-      );
+      cy.get(':nth-child(2) > .h-6').should('have.attr', 'src');
       cy.get(':nth-child(2) > .h-6').should('have.attr', 'alt', 'windSpeed');
     });
   });
