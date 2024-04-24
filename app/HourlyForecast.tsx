@@ -12,7 +12,7 @@ export default function HourlyForecast({
   return (
     <>
       <p className='mb-5 mt-12 text-lg font-medium -tracking-[1.28px] text-[#3F4A5E]'>
-        Forecast for next 24 hours
+        Forecast for next {hourlyForecasts.length} hours
       </p>
 
       <div className='grid grid-cols-2 gap-4 sm:grid-cols-3'>

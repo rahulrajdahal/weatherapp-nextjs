@@ -27,42 +27,38 @@ export default function SearchInput() {
     [searchParams]
   );
 
-  const handleSearch = useCallback(
-    async (value: string | number) => {
-      if (value !== '') {
-        const resp = await fetch(
-          `https://api.weatherapi.com/v1/search.json?q=${value}&key=${process.env.NEXT_PUBLIC_WEATHER_APIKEY}`
-        );
+  const handleSearch = async (value: string | number) => {
+    if (value === searchParams.get('q')) {
+      setSuggestions((prev) => ({ ...prev, isOpen: false }));
+    } else if (value !== '') {
+      const resp = await fetch(
+        `https://api.weatherapi.com/v1/search.json?q=${value}&key=${process.env.NEXT_PUBLIC_WEATHER_APIKEY}`
+      );
 
-        const respJson = await resp.json();
+      const respJson = await resp.json();
 
-        if (respJson.error) {
-          return toast.error(respJson.error.message);
-        }
-
-        setSuggestions((prev) => ({
-          isOpen: true,
-          suggestions: respJson.map(
-            (res: {
-              id: number;
-              region: string;
-              name: string;
-              country: string;
-              url: string;
-            }) => ({
-              id: res.id,
-              name: res.region
-                ? `${res.name},${res.region},${res.country}`
-                : `${res.name},${res.country}`,
-              url: res.url,
-            })
-          ),
-        }));
-        router.push(pathname + '?' + createQueryString('q', value as string));
+      if (respJson.error) {
+        return toast.error(respJson.error.message);
       }
-    },
-    [createQueryString, pathname, router]
-  );
+
+      setSuggestions((_prev) => ({
+        isOpen: true,
+        suggestions: respJson.map(
+          (res: {
+            id: number;
+            region: string;
+            name: string;
+            country: string;
+          }) => ({
+            id: res.id,
+            name: res.region
+              ? `${res.name},${res.region},${res.country}`
+              : `${res.name},${res.country}`,
+          })
+        ),
+      }));
+    }
+  };
 
   const handleLocate = () => {
     if ('geolocation' in navigator) {
@@ -85,7 +81,6 @@ export default function SearchInput() {
 
   const handleSuggestionOnClick = (name: string) => {
     router.push(pathname + '?' + createQueryString('q', name));
-    setSuggestions((prev) => ({ ...prev, isOpen: false }));
   };
 
   return (
@@ -112,7 +107,7 @@ export default function SearchInput() {
               {suggestions.suggestions.map((suggestion: any) => (
                 <li
                   key={suggestion.id}
-                  onClick={() => handleSuggestionOnClick(suggestion.url)}
+                  onClick={() => handleSuggestionOnClick(suggestion.name)}
                   className='hover:bg-grey-300 whitespace-nowrap rounded-sm bg-white
                 px-4 hover:cursor-pointer'
                 >

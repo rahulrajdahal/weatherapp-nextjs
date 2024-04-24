@@ -86,6 +86,7 @@ export default function Home() {
             })
         )
         .flat()
+        .slice(0, 24)
     );
   }, [location.latitude, location.longitude, searchParams]);
 
