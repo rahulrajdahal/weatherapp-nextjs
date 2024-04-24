@@ -23,8 +23,8 @@ jobs:
       - run: npm ci
       - run: npm run build --if-present
       - name: Cypress Component test
-        run: npm component:headless
+        run: npm run component:headless
       - name: Cypress E2e testing
         env:
           CYPRESS_NEXT_PUBLIC_WEATHER_APIKEY: ${{secrets.CYPRESS_NEXT_PUBLIC_WEATHER_APIKEY}}
-        run: npm e2e:headless
+        run: npm run e2e:headless
