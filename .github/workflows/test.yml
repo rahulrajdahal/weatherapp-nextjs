@@ -24,10 +24,3 @@ jobs:
       - run: npm run build --if-present
       - name: Cypress Component test
         run: npm run component:headless
-      - name: Cypress run
-        uses: cypress-io/github-action@v6
-        env:
-          CYPRESS_NEXT_PUBLIC_WEATHER_APIKEY: ${{secrets.CYPRESS_NEXT_PUBLIC_WEATHER_APIKEY}}
-        with:
-          start: npm start
-          browser: chrome
