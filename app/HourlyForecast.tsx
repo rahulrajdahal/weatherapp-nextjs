@@ -7,9 +7,11 @@ import { IHourlyForeCastResp } from './page';
 export default function HourlyForecast({
   hourlyForecasts,
   time,
+  isCelsius,
 }: {
   hourlyForecasts: IHourlyForeCastResp[];
   time: string;
+  isCelsius: boolean;
 }) {
   return (
     <>
@@ -30,7 +32,7 @@ export default function HourlyForecast({
             condition={hourlyForecast.condition}
             humidity={hourlyForecast.humidity}
             windSpeed={hourlyForecast.wind_kph}
-            temp={hourlyForecast.temp_c}
+            temp={isCelsius ? hourlyForecast.temp_c : hourlyForecast.temp_f}
             time={hourlyForecast.time}
           />
         ))}
