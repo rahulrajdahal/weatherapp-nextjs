@@ -32,3 +32,11 @@ jobs:
         run: pnpm install
       - name: Run Component Test
         run: pnpm component:headless
+      - name: Create and populate cypress env file
+        env:
+          NEXT_PUBLIC_WEATHER_APIKEY: ${{secrets.NEXT_PUBLIC_WEATHER_APIKEY}}
+        run: |
+          touch cypress.env.json
+          echo NEXT_PUBLIC_WEATHER_APIKEY="${NEXT_PUBLIC_WEATHER_APIKEY}" >> cpyress.env.json
+      - name: Run E2E Test
+        run: pnpm e2e:headless
