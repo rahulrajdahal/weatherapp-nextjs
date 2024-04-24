@@ -27,6 +27,8 @@ jobs:
         run: |
           touch cypress.env.json
           echo {NEXT_PUBLIC_WEATHER_APIKEY="${NEXT_PUBLIC_WEATHER_APIKEY}"} >> cpyress.env.json
+
+          cat cypress.env.json
       - name: Cypress run
         uses: cypress-io/github-action@v6
         with:
