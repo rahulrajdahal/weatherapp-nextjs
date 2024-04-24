@@ -25,15 +25,14 @@ jobs:
           version: 8
       - name: Checkout
         uses: actions/checkout@v4
-      - name: Cypress run
-        uses: cypress-io/github-action@v6
-        with:
-          test: pnpm component:headless
       - name: Create and populate cypress env file
         env:
           NEXT_PUBLIC_WEATHER_APIKEY: ${{secrets.NEXT_PUBLIC_WEATHER_APIKEY}}
         run: |
           touch cypress.env.json
           echo NEXT_PUBLIC_WEATHER_APIKEY="${NEXT_PUBLIC_WEATHER_APIKEY}" >> cpyress.env.json
-      - name: Run E2E Test
-        run: pnpm e2e:headless
+      - name: Cypress run
+        uses: cypress-io/github-action@v6
+        with:
+          build: npm run build
+          start: npm start
