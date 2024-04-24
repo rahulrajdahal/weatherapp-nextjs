@@ -79,8 +79,14 @@ export default function Home() {
             hour: (ICurrentForecastResp & { time: string })[];
           }) =>
             forecastday.hour.filter((hour) => {
-              if (moment(hour.time).format('L') === moment().format('L')) {
-                return moment(hour.time).format('HH') >= moment().format('HH');
+              if (
+                moment(hour.time).format('L') ===
+                moment(respJson.current.last_updated).format('L')
+              ) {
+                return (
+                  moment(hour.time).format('HH') >=
+                  moment(respJson.current.last_updated).format('HH')
+                );
               }
               return hour;
             })
@@ -123,8 +129,11 @@ export default function Home() {
                 </p>
               )}
 
-              {hourlyForcasts.length > 0 && (
-                <HourlyForecast hourlyForecasts={hourlyForcasts} />
+              {hourlyForcasts.length > 0 && currentForecast && (
+                <HourlyForecast
+                  hourlyForecasts={hourlyForcasts}
+                  time={currentForecast.last_updated}
+                />
               )}
             </div>
           </div>

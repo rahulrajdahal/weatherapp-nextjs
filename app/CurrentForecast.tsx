@@ -30,7 +30,7 @@ export default function CurrentForecast({
         <div className='flex flex-col items-center gap-[11px]'>
           <p
             className='relative text-9xl  font-bold -tracking-[1.28px] text-[#F8FBFF] after:absolute after:top-16   after:text-[32px] after:leading-[40px] after:content-[attr(data-content)] md:text-[200px]'
-            data-content='o'
+            data-content='oC'
           >
             {temp}
           </p>

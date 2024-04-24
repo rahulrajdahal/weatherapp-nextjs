@@ -6,8 +6,10 @@ import { IHourlyForeCastResp } from './page';
 
 export default function HourlyForecast({
   hourlyForecasts,
+  time,
 }: {
   hourlyForecasts: IHourlyForeCastResp[];
+  time: string;
 }) {
   return (
     <>
@@ -21,8 +23,9 @@ export default function HourlyForecast({
             key={hourlyForecast.time}
             isCurrentHour={
               moment(hourlyForecast.time).format('L') ===
-                moment().format('L') &&
-              moment(hourlyForecast.time).format('HH') === moment().format('HH')
+                moment(time).format('L') &&
+              moment(hourlyForecast.time).format('HH') ===
+                moment(time).format('HH')
             }
             condition={hourlyForecast.condition}
             humidity={hourlyForecast.humidity}
