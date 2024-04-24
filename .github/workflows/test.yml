@@ -29,7 +29,8 @@ jobs:
           echo NEXT_PUBLIC_WEATHER_APIKEY="${NEXT_PUBLIC_WEATHER_APIKEY}" >> cpyress.env.json
       - name: Cypress run
         uses: cypress-io/github-action@v6
+        env:
+          NEXT_PUBLIC_WEATHER_APIKEY: ${{secrets.NEXT_PUBLIC_WEATHER_APIKEY}}
         with:
-          run: pnpm install --no-frozen-lockfile
           build: npm run build
           start: npm start
