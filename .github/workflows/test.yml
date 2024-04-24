@@ -30,6 +30,8 @@ jobs:
           cache: 'pnpm'
       - name: Install dependencies
         run: pnpm install
+      - name: ReInstall Cypress
+        run: pnpm add cypress
       - name: Run Component Test
         run: pnpm component:headless
       - name: Create and populate cypress env file
