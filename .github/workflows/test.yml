@@ -31,7 +31,7 @@ jobs:
           echo } >> cpyress.env.json
 
           echo "cat cypress env"
-          cat eypress.env.json
+          cat cypress.env.json
         shell: bash
       - name: Cypress run
         uses: cypress-io/github-action@v6
