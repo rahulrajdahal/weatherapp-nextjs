@@ -57,9 +57,11 @@ jobs:
           CYPRESS_NEXT_PUBLIC_WEATHER_APIKEY: ${{secrets.CYPRESS_NEXT_PUBLIC_WEATHER_APIKEY}}
         with:
           start: npm start
+          browser: chrome
       - name: Cypress run Component
         uses: cypress-io/github-action@v6
         env:
           CYPRESS_NEXT_PUBLIC_WEATHER_APIKEY: ${{secrets.CYPRESS_NEXT_PUBLIC_WEATHER_APIKEY}}
         with:
           component: true
+          browser: chrome
