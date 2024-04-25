@@ -6,7 +6,10 @@ describe('Landing Page E2E Test', () => {
   it('should visit the domain url and render landing page texts.', () => {
     cy.get('.py-5').should('contain.text', 'WeatherApp');
     cy.get('.md\\:flex-row > .justify-between').should('be.visible');
-    cy.get('.mt-0').should('contain.text', 'The current weather in');
+    cy.get('.max-w-\\[597px\\]').should(
+      'contain.text',
+      'The current weather in'
+    );
   });
 
   it('should visit the domain url and fetch the current weather.', function () {
@@ -35,7 +38,6 @@ const fetchForecast = () => {
   let longitude = 85.3343;
 
   cy.visit('/');
-
   cy.intercept(
     `https://api.weatherapi.com/v1/forecast.json?q=${latitude},${longitude}&days=2&key=${Cypress.env('CYPRESS_NEXT_PUBLIC_WEATHER_APIKEY')}`
   ).as('getForecast');
