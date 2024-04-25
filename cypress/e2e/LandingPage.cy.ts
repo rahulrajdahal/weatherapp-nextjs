@@ -38,16 +38,33 @@ const fetchForecast = () => {
   let longitude = 85.3343;
 
   cy.visit('/');
-  cy.intercept(
+  // cy.intercept(
+  //   `https://api.weatherapi.com/v1/forecast.json?q=${latitude},${longitude}&days=2&key=${Cypress.env('CYPRESS_NEXT_PUBLIC_WEATHER_APIKEY')}`
+  // ).as('getForecast');
+  cy.request(
     `https://api.weatherapi.com/v1/forecast.json?q=${latitude},${longitude}&days=2&key=${Cypress.env('CYPRESS_NEXT_PUBLIC_WEATHER_APIKEY')}`
-  ).as('getForecast');
-
-  cy.wait('@getForecast')
-    .its('response.body')
+  )
+    .its('body')
+    .as('getForecast');
+  cy.request(
+    `https://api.weatherapi.com/v1/forecast.json?q=${latitude},${longitude}&days=2&key=${Cypress.env('CYPRESS_NEXT_PUBLIC_WEATHER_APIKEY')}`
+  )
+    .its('body')
     .its('current')
     .as('currentForecast');
-  cy.wait('@getForecast')
-    .its('response.body')
+  cy.request(
+    `https://api.weatherapi.com/v1/forecast.json?q=${latitude},${longitude}&days=2&key=${Cypress.env('CYPRESS_NEXT_PUBLIC_WEATHER_APIKEY')}`
+  )
+    .its('body')
     .its('location')
     .as('currentLocation');
+
+  // cy.wait('@getForecast')
+  //   .its('response.body')
+  //   .its('current')
+  //   .as('currentForecast');
+  // cy.wait('@getForecast')
+  //   .its('response.body')
+  //   .its('location')
+  //   .as('currentLocation');
 };
