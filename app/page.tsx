@@ -108,8 +108,8 @@ export default function Home() {
       <Navbar />
 
       <Suspense fallback={'Loading....'}>
-        <div className='px-4 md:px-[6%] lg:px-[12.5%]'>
-          <div className='no-scrollbar mt-[47px] flex flex-col rounded-[32px] bg-[#F0F4FA] lg:h-[calc(100vh-8rem)]  lg:flex-row lg:gap-[6.25rem]'>
+        <div className='px-4 md:px-[6%] xl:px-[12.5%]'>
+          <div className='no-scrollbar mt-[47px] flex flex-col rounded-[32px] bg-[#F0F4FA] lg:h-[calc(100vh-8rem)] lg:flex-row lg:gap-[6.25rem]'>
             {currentForecast && currentLocation ? (
               <CurrentForecast
                 condition={currentForecast.condition}

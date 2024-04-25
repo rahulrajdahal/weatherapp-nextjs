@@ -33,7 +33,7 @@ export default function HourForecastCard({
   return (
     <div
       key={time}
-      className={`${isCurrentHour ? 'bg-grey-200 text-grey-900' : 'border border-grey-200 text-grey-400'} flex w-fit flex-col items-center rounded-[6.25rem] px-6 py-8`}
+      className={`${isCurrentHour ? 'bg-grey-200 text-grey-900' : 'border border-grey-200 text-grey-400'} flex w-[8.25rem] flex-col items-center rounded-[6.25rem] px-6 py-8`}
       title={text}
     >
       <p className=' text-sm font-medium -tracking-[0.035rem]'>
@@ -47,7 +47,7 @@ export default function HourForecastCard({
         {temp}
       </strong>
       <div className='mt-3 flex h-full w-full flex-col items-center gap-2 text-base font-medium leading-5 -tracking-[0.04rem]'>
-        <span className='flex items-center gap-2'>
+        <span className='flex items-center gap-1'>
           <Image
             src={dropIcon}
             alt='humidity'
@@ -57,7 +57,7 @@ export default function HourForecastCard({
           />
           {humidity}%
         </span>
-        <span className='flex items-center gap-2'>
+        <span className='flex items-center gap-1'>
           <Image
             src={windIcon}
             alt='windSpeed'

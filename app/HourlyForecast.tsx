@@ -19,7 +19,7 @@ export default function HourlyForecast({
         Forecast for next {hourlyForecasts.length} hours
       </p>
 
-      <div className='grid grid-cols-2 gap-4 sm:grid-cols-3'>
+      <div className='grid grid-cols-2 gap-4 sm:grid-cols-3 2xl:grid-cols-4 3xl:grid-cols-5'>
         {hourlyForecasts.map((hourlyForecast) => (
           <HourForecastCard
             key={hourlyForecast.time}

@@ -29,7 +29,7 @@ export default function CurrentForecast({
       >
         <div className='flex flex-col items-center gap-[11px]'>
           <p
-            className='relative text-9xl  font-bold -tracking-[1.28px] text-[#F8FBFF] after:absolute after:top-16   after:text-[32px] after:leading-[40px] after:content-[attr(data-content)] md:text-[200px]'
+            className='relative text-9xl  font-bold -tracking-[1.28px] text-[#F8FBFF] after:absolute after:top-16   after:text-[32px] after:leading-[40px] after:content-[attr(data-content)] 3xl:text-[200px]'
             data-content='o'
           >
             {temp}
@@ -49,7 +49,7 @@ export default function CurrentForecast({
           {moment(last_updated).format('LT')} {tz_id}
         </div>
       </div>
-      <div className='absolute left-4 top-4 w-full rounded-tr-[32px] bg-gradient-to-b from-[#84FAB0] to-[#8FD3F4] opacity-40'></div>
+      <div className='absolute -bottom-4 xl:left-4 xl:top-4 w-full h-[calc(100%-1rem)] rounded-tr-[32px] bg-gradient-to-b from-[#84FAB0] to-[#8FD3F4] opacity-40'></div>
     </aside>
   );
 }
