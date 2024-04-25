@@ -103,7 +103,7 @@ export default function SearchInput() {
             placeholder='Search for a location'
           />
           {suggestions.isOpen && (
-            <ul className='absolute top-10 z-10 rounded-md bg-white py-2 shadow-md'>
+            <ul className='absolute top-10 z-20 rounded-md bg-white py-2 shadow-md'>
               {suggestions.suggestions.map((suggestion: any) => (
                 <li
                   key={suggestion.id}

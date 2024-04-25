@@ -46,10 +46,10 @@ export default function CurrentForecast({
         </div>
 
         <div className='absolute bottom-0 flex items-center text-2xl font-medium leading-[auto] text-[#F8FBFF] md:bottom-5 md:text-[32px]'>
-          {moment(last_updated).format('LT')} {tz_id}
+          {moment(last_updated).format('LT')} {tz_id.replaceAll('_', ' ')}
         </div>
       </div>
-      <div className='absolute -bottom-4 xl:left-4 xl:top-4 w-full h-[calc(100%-1rem)] rounded-tr-[32px] bg-gradient-to-b from-[#84FAB0] to-[#8FD3F4] opacity-40'></div>
+      <div className='absolute -bottom-4 h-[calc(100%-1rem)] w-full rounded-tr-[32px] bg-gradient-to-b from-[#84FAB0] to-[#8FD3F4] opacity-40 xl:left-4 xl:top-4'></div>
     </aside>
   );
 }
