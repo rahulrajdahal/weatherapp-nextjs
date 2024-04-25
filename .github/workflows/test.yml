@@ -38,6 +38,13 @@ jobs:
         uses: actions/checkout@v4
         # Install NPM dependencies, cache them correctly
         # and run all Cypress tests
+      - name: Create cypress env
+        env:
+          CYPRESS_NEXT_PUBLIC_WEATHER_APIKEY: ${{secrets.CYPRESS_NEXT_PUBLIC_WEATHER_APIKEY}}
+        run: |
+          touch cypress.env.json
+          echo {CYPRESS_NEXT_PUBLIC_WEATHER_APIKEY:"${CYPRESS_NEXT_PUBLIC_WEATHER_APIKEY}"} >> cypress.env.json
+          cat cypress.env.json
       - name: Cypress run
         uses: cypress-io/github-action@v6
         env:
