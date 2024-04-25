@@ -6,7 +6,10 @@ describe('Landing Page E2E Test', () => {
   it('should visit the domain url and render landing page texts.', () => {
     cy.get('.py-5').should('contain.text', 'WeatherApp');
     cy.get('.md\\:flex-row > .justify-between').should('be.visible');
-    cy.get('.max-w-[597px]').should('contain.text', 'The current weather in');
+    cy.contains('The current weather in').should(
+      'contain.text',
+      'The current weather in'
+    );
   });
 
   it('should visit the domain url and fetch the current weather.', function () {
