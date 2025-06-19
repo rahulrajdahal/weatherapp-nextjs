@@ -1,21 +1,22 @@
 'use client';
 
 import { pinIcon, searchIcon } from '@/assets/icons';
+import * as Popover from '@radix-ui/react-popover';
 import Image from 'next/image';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { useCallback, useState } from 'react';
 import toast from 'react-hot-toast';
 import { Input } from '..';
 
+type Suggestion = { id: number; name: string };
+
 export default function SearchInput() {
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
 
-  const [suggestions, setSuggestions] = useState({
-    isOpen: false,
-    suggestions: [],
-  });
+  const [suggestions, setSuggestions] = useState<Suggestion[]>([]);
+  const [isOpen, setIsOpen] = useState(false);
 
   const createQueryString = useCallback(
     (name: string, value: string) => {
@@ -28,9 +29,9 @@ export default function SearchInput() {
   );
 
   const handleSearch = async (value: string | number) => {
-    if (value === searchParams.get('q')) {
-      setSuggestions((prev) => ({ ...prev, isOpen: false }));
-    } else if (value !== '') {
+    if (value !== '') {
+      setIsOpen(true);
+
       const resp = await fetch(
         `https://api.weatherapi.com/v1/search.json?q=${value}&key=${process.env.NEXT_PUBLIC_WEATHER_APIKEY}`
       );
@@ -41,9 +42,8 @@ export default function SearchInput() {
         return toast.error(respJson.error.message);
       }
 
-      setSuggestions((_prev) => ({
-        isOpen: true,
-        suggestions: respJson.map(
+      setSuggestions(
+        respJson.map(
           (res: {
             id: number;
             region: string;
@@ -55,8 +55,8 @@ export default function SearchInput() {
               ? `${res.name},${res.region},${res.country}`
               : `${res.name},${res.country}`,
           })
-        ),
-      }));
+        )
+      );
     }
   };
 
@@ -93,30 +93,40 @@ export default function SearchInput() {
           height={24}
           className='h-6 w-6'
         />
-        <span className='relative'>
-          <Input
-            type='search'
-            debounce={800}
-            value={searchParams.get('q') ?? ''}
-            onChange={handleSearch}
-            className='border-none bg-transparent outline-none'
-            placeholder='Search for a location'
-          />
-          {suggestions.isOpen && (
-            <ul className='absolute top-10 z-20 rounded-md bg-white py-2 shadow-md'>
-              {suggestions.suggestions.map((suggestion: any) => (
-                <li
-                  key={suggestion.id}
-                  onClick={() => handleSuggestionOnClick(suggestion.name)}
-                  className='hover:bg-grey-300 hover: cursor-pointer whitespace-nowrap
-                rounded-sm bg-white px-4 py-1 hover:bg-green-200'
-                >
-                  <p>{suggestion.name}</p>
-                </li>
-              ))}
-            </ul>
-          )}
-        </span>
+        <Popover.Root open={isOpen} onOpenChange={setIsOpen}>
+          <Popover.Trigger asChild>
+            <Input
+              type='search'
+              debounce={800}
+              value={searchParams.get('q') ?? ''}
+              onChangeValue={handleSearch}
+              className='w-full border-none bg-transparent outline-none'
+              placeholder='Search for a location'
+            />
+          </Popover.Trigger>
+
+          {suggestions.length > 0 ? (
+            <Popover.Portal>
+              <Popover.Content
+                align='start'
+                alignOffset={-40}
+                sideOffset={10}
+                className='min-w-80 flex flex-col items-start gap-2 rounded-md bg-white py-2 shadow-md'
+              >
+                {suggestions.map((suggestion) => (
+                  <button
+                    key={suggestion.id}
+                    onClick={() => handleSuggestionOnClick(suggestion.name)}
+                    className='hover:bg-grey-300 hover:cursor-pointer whitespace-nowrap
+                rounded-sm border-none text-left bg-white w-full px-4 py-1 outline-none hover:bg-green-200'
+                  >
+                    {suggestion.name}
+                  </button>
+                ))}
+              </Popover.Content>
+            </Popover.Portal>
+          ) : null}
+        </Popover.Root>
       </div>
 
       <button
