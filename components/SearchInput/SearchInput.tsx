@@ -108,8 +108,8 @@ export default function SearchInput() {
                 <li
                   key={suggestion.id}
                   onClick={() => handleSuggestionOnClick(suggestion.name)}
-                  className='hover:bg-grey-300 whitespace-nowrap rounded-sm bg-white
-                px-4 hover:cursor-pointer'
+                  className='hover:bg-grey-300 hover: cursor-pointer whitespace-nowrap
+                rounded-sm bg-white px-4 py-1 hover:bg-green-200'
                 >
                   <p>{suggestion.name}</p>
                 </li>

@@ -46,13 +46,29 @@ export default function Home() {
     longitude: 85.3343,
   });
 
-  useEffect(() => {
+  const handleCurrentLocation = () => {
     if ('geolocation' in navigator) {
       navigator.geolocation.getCurrentPosition(({ coords }) => {
         const { latitude, longitude } = coords;
         setLocation({ latitude, longitude });
       });
     }
+  };
+
+  const handleLocate = () => {
+    if ('geolocation' in navigator) {
+      navigator.permissions.query({ name: 'geolocation' }).then((result) => {
+        if (result.state === 'granted') {
+          handleCurrentLocation();
+        } else {
+          alert('Allow location to enable locate.');
+        }
+      });
+    }
+  };
+
+  useEffect(() => {
+    handleCurrentLocation();
   }, []);
 
   const getForecast = useCallback(async () => {
