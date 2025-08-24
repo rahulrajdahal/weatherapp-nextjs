@@ -1,12 +1,12 @@
-'use client';
+"use client";
 
-import { pinIcon, searchIcon } from '@/assets/icons';
-import * as Popover from '@radix-ui/react-popover';
-import Image from 'next/image';
-import { usePathname, useRouter, useSearchParams } from 'next/navigation';
-import { useCallback, useState } from 'react';
-import toast from 'react-hot-toast';
-import { Input } from '..';
+import { pinIcon, searchIcon } from "@/assets/icons";
+import * as Popover from "@radix-ui/react-popover";
+import Image from "next/image";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { useCallback, useState } from "react";
+import toast from "react-hot-toast";
+import { Input } from "..";
 
 type Suggestion = { id: number; name: string };
 
@@ -16,7 +16,10 @@ export default function SearchInput() {
   const searchParams = useSearchParams();
 
   const [suggestions, setSuggestions] = useState<Suggestion[]>([]);
-  const [isOpen, setIsOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState(!searchParams.get("q"));
+  const [loading, setLoading] = useState(false);
+
+  const [searchQuery, setSearchQuery] = useState<string | number>();
 
   const createQueryString = useCallback(
     (name: string, value: string) => {
@@ -28,101 +31,98 @@ export default function SearchInput() {
     [searchParams]
   );
 
-  const handleSearch = async (value: string | number) => {
-    if (value !== '') {
+  const fetchSuggestions = async (query: string) => {
+    setLoading(true);
+    if (!isOpen) {
       setIsOpen(true);
+    }
 
-      const resp = await fetch(
-        `https://api.weatherapi.com/v1/search.json?q=${value}&key=${process.env.NEXT_PUBLIC_WEATHER_APIKEY}`
-      );
+    const response = await fetch(`/api/weather/search?q=${query}`);
+    const responseJson = await response.json();
+    if (responseJson?.error) {
+      toast.error(responseJson.error);
+    }
 
-      const respJson = await resp.json();
+    if (responseJson?.data) {
+      setSuggestions(responseJson.data);
+    }
 
-      if (respJson.error) {
-        return toast.error(respJson.error.message);
-      }
+    setLoading(false);
+  };
 
-      setSuggestions(
-        respJson.map(
-          (res: {
-            id: number;
-            region: string;
-            name: string;
-            country: string;
-          }) => ({
-            id: res.id,
-            name: res.region
-              ? `${res.name},${res.region},${res.country}`
-              : `${res.name},${res.country}`,
-          })
-        )
-      );
+  const handleSearch = async (value: string | number) => {
+    if (value && value !== searchQuery && value !== searchParams.get("q")) {
+      setSearchQuery(value);
+      await fetchSuggestions(String(value));
     }
   };
 
   const handleLocate = () => {
-    if ('geolocation' in navigator) {
-      navigator.permissions.query({ name: 'geolocation' }).then((result) => {
-        if (result.state === 'granted') {
+    if ("geolocation" in navigator) {
+      navigator.permissions.query({ name: "geolocation" }).then((result) => {
+        if (result.state === "granted") {
           navigator.geolocation.getCurrentPosition(({ coords }) => {
             const { latitude, longitude } = coords;
             router.push(
               pathname +
-                '?' +
-                createQueryString('q', `${latitude},${longitude}`)
+                "?" +
+                createQueryString("q", `${latitude},${longitude}`)
             );
           });
         } else {
-          alert('Allow location to enable locate.');
+          alert("Allow location to enable locate.");
         }
       });
     }
   };
 
   const handleSuggestionOnClick = (name: string) => {
-    router.push(pathname + '?' + createQueryString('q', name));
+    router.push(pathname + "?" + createQueryString("q", name));
+    setIsOpen(false);
   };
 
   return (
-    <div className='flex items-center justify-between self-center rounded-[10px] border border-[#C3D0DD] bg-white p-3'>
-      <div className='flex items-center gap-1'>
+    <div className="flex items-center justify-between self-center rounded-[10px] border border-[#C3D0DD] bg-white p-3">
+      <div className="flex items-center gap-1">
         <Image
           src={searchIcon}
-          alt='search'
+          alt="search"
           width={24}
           height={24}
-          className='h-6 w-6'
+          className="h-6 w-6"
         />
         <Popover.Root open={isOpen} onOpenChange={setIsOpen}>
           <Popover.Trigger asChild>
             <Input
-              type='search'
-              debounce={800}
-              value={searchParams.get('q') ?? ''}
+              type="search"
+              value={searchParams.get("q") ?? ""}
               onChangeValue={handleSearch}
-              className='w-full border-none bg-transparent outline-none'
-              placeholder='Search for a location'
+              className="w-full border-none bg-transparent outline-none"
+              placeholder="Search for a location"
             />
           </Popover.Trigger>
 
-          {suggestions.length > 0 ? (
+          {suggestions?.length > 0 ? (
             <Popover.Portal>
               <Popover.Content
-                align='start'
+                autoFocus={false}
+                align="start"
                 alignOffset={-40}
                 sideOffset={10}
-                className='min-w-80 flex flex-col items-start gap-2 rounded-md bg-white py-2 shadow-md'
+                className="min-w-80 flex flex-col items-start gap-2 rounded-md bg-white py-2 shadow-md"
               >
-                {suggestions.map((suggestion) => (
-                  <button
-                    key={suggestion.id}
-                    onClick={() => handleSuggestionOnClick(suggestion.name)}
-                    className='hover:bg-grey-300 hover:cursor-pointer whitespace-nowrap
-                rounded-sm border-none text-left bg-white w-full px-4 py-1 outline-none hover:bg-green-200'
-                  >
-                    {suggestion.name}
-                  </button>
-                ))}
+                {suggestions?.length > 0
+                  ? suggestions?.map((suggestion) => (
+                      <button
+                        key={suggestion.id}
+                        onClick={() => handleSuggestionOnClick(suggestion.name)}
+                        className="hover:bg-grey-300 hover:cursor-pointer whitespace-nowrap
+                rounded-sm border-none text-left bg-white w-full px-4 py-1 outline-none hover:bg-green-200"
+                      >
+                        {suggestion.name}
+                      </button>
+                    ))
+                  : null}
               </Popover.Content>
             </Popover.Portal>
           ) : null}
@@ -131,15 +131,15 @@ export default function SearchInput() {
 
       <button
         onClick={handleLocate}
-        className='flex items-center text-base font-medium leading-6 -tracking-[1.28px] text-[#4169E1] underline'
+        className="flex items-center text-base font-medium leading-6 -tracking-[1.28px] text-[#4169E1] underline"
       >
-        Locate{' '}
+        Locate{" "}
         <Image
           src={pinIcon}
-          alt='search'
+          alt="search"
           width={24}
           height={24}
-          className='h-6 w-6'
+          className="h-6 w-6"
         />
       </button>
     </div>
