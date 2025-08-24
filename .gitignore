@@ -7,3 +7,6 @@ cypress.env.json
 
 pnpm-lock.yaml
 yarn-lock.json
+
+*storybook.log
+storybook-static

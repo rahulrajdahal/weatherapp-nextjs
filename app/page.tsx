@@ -93,7 +93,7 @@ export default function Home() {
         setHourlyForecasts(responseJson.data.forecast);
       }
     }
-  }, [searchParams.get("q")]);
+  }, [searchParams]);
 
   useEffect(() => {
     getForecast();

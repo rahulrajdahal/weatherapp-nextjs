@@ -1,6 +1,6 @@
-import React, { ComponentPropsWithRef, forwardRef } from 'react';
+import React, { ComponentPropsWithRef, forwardRef } from "react";
 
-interface InputProps extends ComponentPropsWithRef<'input'> {
+interface InputProps extends ComponentPropsWithRef<"input"> {
   debounce?: number;
   value: string | number;
   onChangeValue: (value: string | number) => void;
@@ -31,6 +31,7 @@ export default forwardRef(function Input(
     <input
       {...props}
       ref={ref}
+      aria-label={`${String(value)}-input`}
       value={value}
       onChange={(e) => setValue(e.target.value)}
     />

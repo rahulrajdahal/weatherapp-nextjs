@@ -1,5 +1,4 @@
 import { type NextRequest, NextResponse } from "next/server";
-import { CustomError } from "../forecast/route";
 
 export async function GET(req: NextRequest) {
   try {
@@ -13,7 +12,10 @@ export async function GET(req: NextRequest) {
     const responseJson = await response.json();
 
     if (responseJson.error) {
-      throw new CustomError("Error fetching locations", 400);
+      return NextResponse.json(
+        { error: responseJson.error.message },
+        { status: 400 }
+      );
     }
 
     const locations = responseJson.map(
@@ -28,10 +30,7 @@ export async function GET(req: NextRequest) {
     return NextResponse.json({
       data: locations,
     });
-  } catch (error) {
-    NextResponse.json({ error: "Server error" }, { status: 500 });
-    if (error instanceof CustomError) {
-      NextResponse.json({ error: error.message }, { status: error.code });
-    }
+  } catch {
+    return NextResponse.json({ error: "Server error" }, { status: 500 });
   }
 }

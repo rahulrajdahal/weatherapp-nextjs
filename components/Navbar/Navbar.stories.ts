@@ -1,14 +1,17 @@
-import type { Meta, StoryObj } from '@storybook/react';
-import Navbar from './Navbar';
+import type { Meta, StoryObj } from "@storybook/nextjs-vite";
+
+import Navbar from "./Navbar";
 
 const meta = {
-  title: 'Components/Navbar',
+  title: "Components/Navbar",
   component: Navbar,
   parameters: {
     nextjs: {
       appDirectory: true,
+      layout: "centered",
     },
   },
+  tags: ["autodocs"],
 } satisfies Meta<typeof Navbar>;
 
 export default meta;

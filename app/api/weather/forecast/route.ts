@@ -14,7 +14,10 @@ export async function GET(req: NextRequest) {
     const responseJson = await response.json();
 
     if (responseJson.error) {
-      throw new CustomError("Error fetching forecast", 400);
+      return NextResponse.json(
+        { error: responseJson.error.message },
+        { status: 400 }
+      );
     }
 
     const twentyFourHourforecast = responseJson.forecast.forecastday
@@ -42,20 +45,7 @@ export async function GET(req: NextRequest) {
         currentLocation: responseJson.location,
       },
     });
-  } catch (error) {
-    NextResponse.json({ error: "Server error" }, { status: 500 });
-    if (error instanceof CustomError) {
-      NextResponse.json({ error: error.message }, { status: error.code });
-    }
-  }
-}
-
-export class CustomError extends Error {
-  code: number;
-
-  constructor(message: string, code: number) {
-    super(message);
-    this.name = "Bad Request";
-    this.code = code;
+  } catch {
+    return NextResponse.json({ error: "Server error" }, { status: 500 });
   }
 }

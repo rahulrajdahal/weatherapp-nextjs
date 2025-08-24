@@ -1,10 +1,14 @@
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from "@storybook/nextjs-vite";
 
-import HourForecastCard, { initialProps } from './HourForecastCard';
+import HourForecastCard, { initialProps } from "./HourForecastCard";
 
 const meta = {
-  title: 'Components/HourForecastCard',
+  title: "Components/HourForecastCard",
   component: HourForecastCard,
+  parameters: {
+    layout: "centered",
+  },
+  tags: ["autodocs"],
   args: initialProps,
 } satisfies Meta<typeof HourForecastCard>;
 
