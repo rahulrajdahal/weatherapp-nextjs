@@ -1,32 +1,39 @@
-import React from 'react';
+import React, { ComponentPropsWithRef, forwardRef } from "react";
 
-export default function Input({
-  value: initialValue,
-  onChange,
-  debounce = 500,
-  ...props
-}: {
-  value: string | number;
-  onChange: (value: string | number) => void;
+interface InputProps extends ComponentPropsWithRef<"input"> {
   debounce?: number;
-} & Omit<React.InputHTMLAttributes<HTMLInputElement>, 'onChange'>) {
+  value: string | number;
+  onChangeValue: (value: string | number) => void;
+}
+
+export default forwardRef(function Input(
+  {
+    debounce = 500,
+    value: initialValue,
+    onChangeValue,
+    ...props
+  }: Readonly<InputProps>,
+  ref: React.ForwardedRef<HTMLInputElement>
+) {
   const [value, setValue] = React.useState(initialValue);
 
   React.useEffect(() => setValue(initialValue), [initialValue]);
 
   React.useEffect(() => {
     const timeout = setTimeout(() => {
-      onChange(value);
+      onChangeValue(value);
     }, debounce);
 
     return () => clearTimeout(timeout);
-  }, [debounce, onChange, value]);
+  }, [debounce, onChangeValue, props, value]);
 
   return (
     <input
       {...props}
+      ref={ref}
+      aria-label={`${String(value)}-input`}
       value={value}
       onChange={(e) => setValue(e.target.value)}
     />
   );
-}
+});

@@ -1,15 +1,21 @@
+@import "tailwindcss";
+
 html,
 :root,
-*,
 body {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
 
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+
+@theme{
+  --color-grey-400: #8999AF;
+  --color-grey-200: #DFE5ED;
+  --color-grey-900: #111625;
+
+   --breakpoint-3xl: 120rem;
+}
 
 @layer base {
   h1 {

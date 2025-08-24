@@ -45,7 +45,7 @@ export default function CurrentForecast({
           </div>
         </div>
 
-        <div className='absolute bottom-0 flex items-center text-2xl font-medium leading-[auto] text-[#F8FBFF] md:bottom-5 md:text-[32px]'>
+        <div className='absolute bottom-0 flex items-center text-center text-2xl font-medium leading-[auto] text-[#F8FBFF] md:bottom-5 md:text-[32px]'>
           {moment(last_updated).format('LT')} {tz_id.replaceAll('_', ' ')}
         </div>
       </div>
