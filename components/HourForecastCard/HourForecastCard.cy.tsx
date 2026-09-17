@@ -3,39 +3,27 @@ import HourForecastCard, { initialProps } from './HourForecastCard';
 describe('<HourForecastCard />', () => {
   it('renders', () => {
     cy.mount(<HourForecastCard {...initialProps} />);
+    cy.get('article').should('be.visible');
   });
 
-  it('should render drop icon.', () => {
-    cy.readFile('assets/icons/drop.svg', null).then((img) => {
-      // Intercept requests to Next.js backend image endpoint
-      cy.intercept('_next/static/media/*', {
-        statusCode: 200,
-        headers: { 'Content-Type': 'image/svg+xml' },
-        body: img.buffer,
-      });
-      cy.mount(<HourForecastCard {...initialProps} />);
-      cy.get(':nth-child(1) > .h-6').should('have.attr', 'src');
-      cy.get(':nth-child(1) > .h-6').should('have.attr', 'alt', 'humidity');
-    });
-  });
-
-  it('should render wind icon.', () => {
-    cy.readFile('assets/icons/wind.svg', null).then((windImg) => {
-      // Intercept requests to Next.js backend image endpoint
-      cy.intercept('_next/static/media/*', {
-        statusCode: 200,
-        headers: { 'Content-Type': 'image/svg+xml' },
-        body: windImg.buffer,
-      });
-      cy.mount(<HourForecastCard {...initialProps} />);
-      cy.get(':nth-child(2) > .h-6').should('have.attr', 'src');
-      cy.get(':nth-child(2) > .h-6').should('have.attr', 'alt', 'windSpeed');
-    });
-  });
-
-  it('should render the forecast card with proper props', () => {
+  it('should render humidity and wind speed indicators', () => {
     cy.mount(<HourForecastCard {...initialProps} />);
-    cy.get('.bg-grey-200').should('be.visible');
-    cy.get('.bg-grey-200').should('have.attr', 'title');
+    cy.get('span[title="Humidity: 45%"]').should('be.visible');
+    cy.get('span[title="Wind: 10 km/h"]').should('be.visible');
+    cy.contains('45%').should('be.visible');
+    cy.contains('10km/h').should('be.visible');
+  });
+
+  it('should render the forecast card with proper props and attributes', () => {
+    cy.mount(<HourForecastCard {...initialProps} />);
+    cy.get('article[title="Sunny"]').should('be.visible');
+    cy.contains('24').should('be.visible');
+    cy.contains('Sunny').should('be.visible');
+  });
+
+  it('should render the active "Now" badge when isCurrentHour is true', () => {
+    cy.mount(<HourForecastCard {...initialProps} isCurrentHour={true} />);
+    cy.contains('Now').should('be.visible');
   });
 });
+

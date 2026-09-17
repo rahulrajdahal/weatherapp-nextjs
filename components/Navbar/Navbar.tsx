@@ -1,21 +1,40 @@
-'use client';
+"use client";
 
-import Link from 'next/link';
-import { SearchInput } from '..';
+import Link from "next/link";
+import { SearchInput } from "..";
 
-export default function Navbar() {
+/**
+ * Props for the Navbar component.
+ */
+export interface NavbarProps {
+  /** Optional custom CSS class name */
+  className?: string;
+}
+
+/**
+ * Navbar renders the primary application navigation header featuring
+ * the HawaPani logo mark, home route link, and global location search input.
+ */
+export default function Navbar({ className = "" }: NavbarProps = {}) {
   return (
-    <nav className='flex w-full flex-col items-center justify-between  gap-4 md:flex-row  md:px-[12.5%]'>
+    <nav
+      aria-label="Main Navigation"
+      className={`flex w-full flex-col sm:flex-row items-center justify-between gap-3 py-2 sm:py-3 px-4 md:px-[5%] xl:px-[8%] 2xl:px-[12.5%] ${className}`}
+    >
       <Link
-        href='/'
-        className='py-5 text-[32px] font-bold leading-[40px] -tracking-[1.28px] text-white'
+        href="/"
+        aria-label="HawaPani Home"
+        className="group flex items-center gap-2.5 text-xl sm:text-2xl md:text-[28px] font-black leading-none -tracking-[1px] text-white hover:opacity-95 transition-all rounded-2xl p-1 focus-visible:ring-2 focus-visible:ring-white focus-visible:outline-hidden"
       >
-        WeatherApp
+        <span className="flex h-9 w-9 items-center justify-center rounded-2xl bg-white/20 backdrop-blur-md border border-white/30 shadow-xs group-hover:scale-105 group-hover:bg-white/30 transition-all text-lg">
+          ⛅
+        </span>
+        <span className="drop-shadow-xs">HawaPani</span>
       </Link>
 
-      <SearchInput />
-
-      <div></div>
+      <div className="w-full max-w-md">
+        <SearchInput />
+      </div>
     </nav>
   );
 }

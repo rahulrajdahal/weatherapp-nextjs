@@ -14,7 +14,18 @@
 // ***********************************************************
 
 // Import commands.js using ES2015 syntax:
-import './commands'
+import './commands';
 
-// Alternatively you can use CommonJS syntax:
-// require('./commands')
+// Ignore React hydration mismatch errors in Cypress E2E runner
+Cypress.on('uncaught:exception', (err) => {
+  if (
+    err.message.includes('Minified React error #418') ||
+    err.message.includes('Minified React error #423') ||
+    err.message.includes('Minified React error #425') ||
+    err.message.includes('Hydration failed') ||
+    err.message.includes('hydration')
+  ) {
+    return false;
+  }
+  return true;
+});

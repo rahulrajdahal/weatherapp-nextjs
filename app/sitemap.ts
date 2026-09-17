@@ -1,12 +1,14 @@
-import { MetadataRoute } from 'next';
+import type { MetadataRoute } from "next";
 
 export default function sitemap(): MetadataRoute.Sitemap {
+  const baseUrl = "https://HawaPani-nextjs.vercel.app";
+
   return [
     {
-      url: 'https://weatherApp.vercel.app',
+      url: baseUrl,
       lastModified: new Date(),
-      changeFrequency: 'hourly',
-      priority: 1,
+      changeFrequency: "hourly",
+      priority: 1.0,
     },
   ];
 }

@@ -1,0 +1,121 @@
+name: Quality & CI Pipeline
+
+on:
+  push:
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  lint-and-typecheck:
+    name: Lint & Typecheck
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: "npm"
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run Typecheck / Lint
+        run: npm run lint
+
+  unit-tests-and-coverage:
+    name: Unit Tests & Coverage
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: "npm"
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run Vitest with Coverage
+        run: npm run test:coverage
+
+      - name: Upload HTML & JSON Coverage Reports
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: coverage-artifacts
+          path: coverage
+          if-no-files-found: ignore
+
+  storybook-build:
+    name: Storybook Build & A11y Assets
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: "npm"
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build Storybook
+        run: npm run build-storybook
+
+  production-build:
+    name: Next.js Production Build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: "npm"
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build Next.js Application
+        env:
+          WEATHER_API_KEY: ${{ secrets.WEATHER_API_KEY || secrets.CYPRESS_WEATHER_API_KEY || secrets.WEATHER_APIKEY || 'demo-key' }}
+          WEATHER_APIKEY: ${{ secrets.WEATHER_API_KEY || secrets.CYPRESS_WEATHER_API_KEY || secrets.WEATHER_APIKEY || 'demo-key' }}
+        run: npm run build
+
+  cypress-tests:
+    name: Cypress Component & E2E Tests
+    runs-on: ubuntu-latest
+    needs: [production-build]
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: "npm"
+
+      - name: Cypress Headless Runner
+        uses: cypress-io/github-action@v6
+        env:
+          WEATHER_API_KEY: ${{ secrets.WEATHER_API_KEY || secrets.CYPRESS_WEATHER_API_KEY || secrets.WEATHER_APIKEY || 'demo-key' }}
+          WEATHER_APIKEY: ${{ secrets.WEATHER_API_KEY || secrets.CYPRESS_WEATHER_API_KEY || secrets.WEATHER_APIKEY || 'demo-key' }}
+        with:
+          build: npm run build
+          start: npm start
+          wait-on: "http://localhost:3000"
+          wait-on-timeout: 120
+          browser: chrome

@@ -1,55 +1,49 @@
+/// <reference types="cypress" />
+
 describe('Landing Page E2E Test', () => {
   beforeEach(() => {
     fetchForecast();
   });
 
   it('should visit the domain url and render landing page texts.', () => {
-    cy.get('.py-5').should('contain.text', 'WeatherApp');
-    cy.get('.md\\:flex-row > .justify-between').should('be.visible');
+    cy.get('nav').should('contain.text', 'HawaPani');
+    cy.get('#main-content').should('be.visible');
   });
 
-  it('should visit the domain url and fetch the current weather.', function () {
-    expect(this.currentForecast).to.haveOwnProperty('condition');
-    expect(this.currentForecast)
-      .to.haveOwnProperty('condition')
-      .to.haveOwnProperty('text');
-    expect(this.currentForecast)
-      .to.haveOwnProperty('condition')
-      .to.haveOwnProperty('icon');
+  it('should toggle temperature scale between Celsius and Fahrenheit', () => {
+    cy.get('button[aria-label="Fahrenheit scale"]').first().click();
+    cy.window().its('localStorage').invoke('getItem', 'HawaPani_temp_scale').should('eq', 'fahrenheit');
 
-    expect(this.currentForecast).to.haveOwnProperty('humidity');
-    expect(this.currentForecast).to.haveOwnProperty('temp_c');
-    expect(this.currentForecast).to.haveOwnProperty('last_updated');
-    expect(this.currentForecast).to.haveOwnProperty('wind_kph');
+    cy.get('button[aria-label="Celsius scale"]').first().click();
+    cy.window().its('localStorage').invoke('getItem', 'HawaPani_temp_scale').should('eq', 'celsius');
   });
-  it('should visit the domain url and fetch the current weather location.', function () {
-    expect(this.currentLocation).to.haveOwnProperty('tz_id');
-    expect(this.currentLocation).to.haveOwnProperty('name');
-    expect(this.currentLocation).to.haveOwnProperty('country');
+
+  it('should interact with search input', () => {
+    cy.get('input[type="search"]').should('be.visible').clear().type('London');
+    cy.get('input[type="search"]').should('have.value', 'London');
+  });
+
+  it('should render current weather and location in hero panel', () => {
+    cy.get('section[aria-label="Current Weather Summary"]').should('be.visible');
+    cy.contains('The current weather in').should('contain.text', 'Kathmandu');
+    cy.get('[aria-label="Current temperature: 22 degrees"]').should('be.visible');
+    cy.contains('Partly cloudy').should('be.visible');
+    cy.contains('10 km/h').should('be.visible');
+    cy.contains('65%').should('be.visible');
   });
 });
 
 const fetchForecast = () => {
-  let latitude = 27.7293;
-  let longitude = 85.3343;
+  cy.fixture('forecast.json').then((mockData) => {
+    cy.wrap(mockData.data).as('getForecast');
+    cy.wrap(mockData.data.currentForecast).as('currentForecast');
+    cy.wrap(mockData.data.currentLocation).as('currentLocation');
+  });
+
+  cy.intercept('GET', '/api/weather/forecast*', { fixture: 'forecast.json' }).as('getForecastRoute');
+  cy.intercept('GET', '/api/weather/search*', { fixture: 'search.json' }).as('getSearchRoute');
 
   cy.visit('/');
-
-  cy.request(
-    `https://api.weatherapi.com/v1/forecast.json?q=${latitude},${longitude}&days=2&key=${Cypress.env('CYPRESS_NEXT_PUBLIC_WEATHER_APIKEY')}`
-  )
-    .its('body')
-    .as('getForecast');
-  cy.request(
-    `https://api.weatherapi.com/v1/forecast.json?q=${latitude},${longitude}&days=2&key=${Cypress.env('CYPRESS_NEXT_PUBLIC_WEATHER_APIKEY')}`
-  )
-    .its('body')
-    .its('current')
-    .as('currentForecast');
-  cy.request(
-    `https://api.weatherapi.com/v1/forecast.json?q=${latitude},${longitude}&days=2&key=${Cypress.env('CYPRESS_NEXT_PUBLIC_WEATHER_APIKEY')}`
-  )
-    .its('body')
-    .its('location')
-    .as('currentLocation');
+  cy.wait('@getForecastRoute');
 };
+

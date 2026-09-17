@@ -1,0 +1,116 @@
+{
+  "data": {
+    "currentLocation": {
+      "name": "Kathmandu",
+      "region": "Bagmati",
+      "country": "Nepal",
+      "lat": 27.7,
+      "lon": 85.32,
+      "tz_id": "Asia/Kathmandu",
+      "localtime": "2026-09-17 12:00",
+      "localtime_epoch": 1726574400
+    },
+    "currentForecast": {
+      "last_updated": "2026-09-17 12:00",
+      "last_updated_epoch": 1726574400,
+      "temp_c": 22.0,
+      "temp_f": 71.6,
+      "humidity": 65,
+      "wind_kph": 10.0,
+      "wind_dir": "SE",
+      "pressure_mb": 1013,
+      "pressure_in": 29.91,
+      "precip_mm": 0,
+      "precip_in": 0,
+      "vis_km": 10,
+      "vis_miles": 6,
+      "uv": 5,
+      "feelslike_c": 22.0,
+      "feelslike_f": 71.6,
+      "condition": {
+        "text": "Partly cloudy",
+        "icon": "//cdn.weatherapi.com/weather/64x64/day/116.png",
+        "code": 1003
+      },
+      "air_quality": {
+        "pm2_5": 12.5,
+        "pm10": 25.0,
+        "us-epa-index": 1
+      }
+    },
+    "forecast": [
+      {
+        "time": "2026-09-17 12:00",
+        "time_epoch": 1726574400,
+        "temp_c": 22.0,
+        "temp_f": 71.6,
+        "humidity": 65,
+        "wind_kph": 10.0,
+        "condition": {
+          "text": "Partly cloudy",
+          "icon": "//cdn.weatherapi.com/weather/64x64/day/116.png",
+          "code": 1003
+        },
+        "chance_of_rain": 10,
+        "uv": 5,
+        "feelslike_c": 22.0,
+        "feelslike_f": 71.6
+      },
+      {
+        "time": "2026-09-17 13:00",
+        "time_epoch": 1726578000,
+        "temp_c": 23.0,
+        "temp_f": 73.4,
+        "humidity": 60,
+        "wind_kph": 11.0,
+        "condition": {
+          "text": "Sunny",
+          "icon": "//cdn.weatherapi.com/weather/64x64/day/113.png",
+          "code": 1000
+        },
+        "chance_of_rain": 5,
+        "uv": 6,
+        "feelslike_c": 23.0,
+        "feelslike_f": 73.4
+      }
+    ],
+    "dailyForecast": [
+      {
+        "date": "2026-09-17",
+        "date_epoch": 1726531200,
+        "maxtemp_c": 26.0,
+        "maxtemp_f": 78.8,
+        "mintemp_c": 15.0,
+        "mintemp_f": 59.0,
+        "avgtemp_c": 21.0,
+        "avgtemp_f": 69.8,
+        "maxwind_kph": 12.0,
+        "avghumidity": 68,
+        "daily_chance_of_rain": 20,
+        "condition": {
+          "text": "Partly cloudy",
+          "icon": "//cdn.weatherapi.com/weather/64x64/day/116.png",
+          "code": 1003
+        },
+        "uv": 7,
+        "astronomy": {
+          "sunrise": "05:50 AM",
+          "sunset": "06:05 PM",
+          "moonrise": "06:10 PM",
+          "moonset": "05:30 AM",
+          "moon_phase": "Full Moon",
+          "moon_illumination": "98"
+        }
+      }
+    ],
+    "astronomy": {
+      "sunrise": "05:50 AM",
+      "sunset": "06:05 PM",
+      "moonrise": "06:10 PM",
+      "moonset": "05:30 AM",
+      "moon_phase": "Full Moon",
+      "moon_illumination": "98"
+    },
+    "alerts": []
+  }
+}

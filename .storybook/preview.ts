@@ -8,15 +8,44 @@ const preview: Preview = {
         color: /(background|color)$/i,
         date: /Date$/i,
       },
+      expanded: true,
     },
-
+    docs: {
+      toc: true,
+    },
+    backgrounds: {
+      default: "Sky Light",
+      values: [
+        {
+          name: "Sky Light",
+          value: "#f0f6fc",
+        },
+        {
+          name: "Day Sunny Gradient",
+          value: "linear-gradient(135deg, #e0f2fe 0%, #f0fdf4 100%)",
+        },
+        {
+          name: "Night Dark",
+          value: "#0b1329",
+        },
+        {
+          name: "Overcast",
+          value: "#e2e8f0",
+        },
+        {
+          name: "White",
+          value: "#ffffff",
+        },
+      ],
+    },
+    nextjs: {
+      appDirectory: true,
+    },
     a11y: {
-      // 'todo' - show a11y violations in the test UI only
-      // 'error' - fail CI on a11y violations
-      // 'off' - skip a11y checks entirely
       test: "todo",
     },
   },
+  tags: ["autodocs"],
 };
 
 export default preview;

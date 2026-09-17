@@ -1,12 +1,12 @@
-import { MetadataRoute } from 'next';
+import type { MetadataRoute } from "next";
 
 export default function robots(): MetadataRoute.Robots {
   return {
     rules: {
-      userAgent: '*',
-      allow: '/',
-      disallow: '/standalone/',
+      userAgent: "*",
+      allow: "/",
+      disallow: ["/api/"],
     },
-    sitemap: 'https://weatherapp.vercel.app/sitemap.xml',
+    sitemap: "https://HawaPani-nextjs.vercel.app/sitemap.xml",
   };
 }

@@ -1,0 +1,56 @@
+import { Meta } from "@storybook/addon-docs/blocks";
+
+<Meta title="Introduction" />
+
+# 🌤️ HawaPani Design System & Component Library
+
+Welcome to the **HawaPani** design system documentation. HawaPani is a modern, responsive, and atmospheric Progressive Web Application (PWA) built with **Next.js 16**, **TypeScript**, and **Tailwind CSS v4**.
+
+---
+
+## 🎨 Design Principles
+
+1. **Atmospheric Dynamic Glassmorphism**
+   - Translucent card backgrounds (`bg-white/80 backdrop-blur-md`).
+   - Adaptive color palettes shifting according to time-of-day and meteorological conditions (Clear, Rain, Snow, Thunderstorm, Overcast).
+2. **Deterministic Layout & Zero CLS**
+   - Structured card dimensions and zero-CLS shimmer skeleton loaders during asynchronous transitions.
+3. **Accessibility (WCAG 2.1 AA)**
+   - Semantic landmark elements (`<header>`, `<main>`, `<section>`, `<article>`).
+   - Full keyboard navigation and visible focus rings (`focus-visible:ring-2 focus-visible:ring-blue-500`).
+   - Screen-reader friendly aria labels and descriptive accessible alternatives.
+4. **Modularity & Reusability**
+   - Explicit TypeScript interfaces with JSDoc descriptions for every prop.
+   - Decoupled presentation from external API side-effects.
+
+---
+
+## 📦 Component Architecture
+
+| Component                      | Responsibility                                                                                                       |
+| :----------------------------- | :------------------------------------------------------------------------------------------------------------------- |
+| **`LocationHeadline`**         | Dynamic headline with current location, country, condition summary, and 1-tap bookmark star.                         |
+| **`HourForecastCard`**         | 24-hour continuous rolling card displaying time, weather icon, temperature, humidity, and wind speed.                |
+| **`DailyForecastCard`**        | 7-day outlook card with day name, weather icon, precipitation chance badge, and temperature range bar.               |
+| **`WeatherTrendChart`**        | Responsive Recharts `ComposedChart` featuring continuous cubic Bézier temperature spline and rain chance bars.       |
+| **`MetricsGrid`**              | Comprehensive 6-tile grid for Air Quality Index (US-EPA), UV Index, Feels Like, Astronomy, Pressure, and Visibility. |
+| **`AlertBanner`**              | Weather advisory warning banner with expandable instructions, severity badges, and effective times.                  |
+| **`FavoritesBar`**             | Quick-access bookmark pill bar with 1-tap navigation and city removal.                                               |
+| **`Input`**                    | Core base input component supporting forwarded refs, accessible defaults, and optional built-in debouncing.           |
+| **`SegmentedControl`**         | WAI-ARIA radiogroup segmented control supporting icons, sizes, and arrow key navigation.                             |
+| **`UnitToggle`**               | Persistent Celsius (°C) and Fahrenheit (°F) scale switcher (composes `SegmentedControl`).                            |
+| **`CityComparisonModal`**      | Multi-city side-by-side comparison modal with live deltas and metrics comparison table (reuses `Input`).             |
+| **`WeatherDashboardSkeleton`** | Shimmer skeleton loader providing instant feedback with zero layout shift.                                           |
+| **`Navbar`**                   | Header bar containing the application brand mark and search input.                                                   |
+| **`SearchInput`**              | 300ms debounced location search with keyboard navigable autocomplete popover (reuses `Input`).                       |
+| **`Popover`**                  | Project-level Radix UI wrapper encapsulating Root, Trigger, Content, Anchor, and Portal primitives.                  |
+| **`OfflineBadge`**             | Accessible status pill notifying users when viewing cached meteorological metrics offline.                           |
+| **`OfflineGame`**              | Interactive fallback weather mini-game rendered when disconnected without cached forecast data.                      |
+| **`CurrentForecast`**          | Hero panel showing current temperature, condition badge, local time, and dynamic gradient background.                |
+
+
+---
+
+## 🚀 Usage Guidelines
+
+All components accept standard props documented in their respective story pages. Props are fully typed with TypeScript definitions exported from their respective modules.
