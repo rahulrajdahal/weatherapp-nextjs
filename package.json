@@ -17,7 +17,7 @@
     "e2e:headless": "start-server-and-test dev http://localhost:3000 \"cypress run --e2e\"",
     "component": "cypress open --component",
     "component:headless": "cypress run --component",
-    "test": "npm run test:unit && npm run e2e:headless && npm run component:headless"
+    "test": "npm run test:unit && npm run test:coverage && npm run component:headless && npm run e2e:headless"
   },
   "dependencies": {
     "@radix-ui/react-popover": "^1.1.23",

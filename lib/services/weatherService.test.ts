@@ -14,7 +14,7 @@ describe('weatherService', () => {
     vi.restoreAllMocks();
   });
 
-  describe('API Key handling', () => {
+  describe('API Key handling and URL configuration', () => {
     it('throws an error if no API key is defined in environment', async () => {
       delete process.env.WEATHER_API_KEY;
 
@@ -41,11 +41,79 @@ describe('weatherService', () => {
         expect.any(Object)
       );
     });
+
+    it('uses process.env.API_URL override when provided', async () => {
+      process.env.WEATHER_API_KEY = 'valid-key';
+      process.env.API_URL = 'https://custom-proxy.weather.internal';
+
+      const mockFetch = vi.fn().mockResolvedValue({
+        ok: true,
+        json: async () => ({
+          location: { name: 'Kathmandu' },
+          current: { temp_c: 20, last_updated_epoch: 1000 },
+          forecast: { forecastday: [] },
+        }),
+      });
+      global.fetch = mockFetch;
+
+      await weatherService.getForecast('Kathmandu');
+      expect(mockFetch).toHaveBeenCalledWith(
+        expect.stringContaining('https://custom-proxy.weather.internal/forecast.json'),
+        expect.any(Object)
+      );
+    });
   });
 
-  describe('getForecast', () => {
+  describe('fetchWithRetry mechanics', () => {
     beforeEach(() => {
       process.env.WEATHER_API_KEY = 'valid-key';
+    });
+
+    it('retries when fetch throws network error and succeeds on subsequent attempt', async () => {
+      const mockFetch = vi
+        .fn()
+        .mockRejectedValueOnce(new Error('Network error: connection reset'))
+        .mockResolvedValueOnce({
+          ok: true,
+          status: 200,
+          json: async () => ({
+            location: { name: 'Kathmandu' },
+            current: { temp_c: 20, last_updated_epoch: 1000 },
+            forecast: { forecastday: [] },
+          }),
+        });
+      global.fetch = mockFetch;
+
+      const data = await weatherService.getForecast('Kathmandu');
+      expect(mockFetch).toHaveBeenCalledTimes(2);
+      expect(data.currentLocation.name).toBe('Kathmandu');
+    });
+
+    it('re-throws network error when fetch exhausts all retries', async () => {
+      const mockFetch = vi
+        .fn()
+        .mockRejectedValue(new Error('Fatal upstream network outage'));
+      global.fetch = mockFetch;
+
+      await expect(weatherService.getForecast('Kathmandu')).rejects.toThrow(
+        'Fatal upstream network outage'
+      );
+      // initial + 3 retries = 4 attempts
+      expect(mockFetch).toHaveBeenCalledTimes(4);
+    });
+
+    it('stops retrying and throws when 5xx errors exhaust all retries', async () => {
+      const mockFetch = vi.fn().mockResolvedValue({
+        ok: false,
+        status: 500,
+        json: async () => ({}),
+      });
+      global.fetch = mockFetch;
+
+      await expect(weatherService.getForecast('Kathmandu')).rejects.toThrow(
+        'Failed to fetch weather forecast (HTTP 500)'
+      );
+      expect(mockFetch).toHaveBeenCalledTimes(4);
     });
 
     it('does not retry 4xx client errors', async () => {
@@ -87,22 +155,26 @@ describe('weatherService', () => {
       expect(mockFetch).toHaveBeenCalledTimes(2);
       expect(data.currentLocation.name).toBe('Kathmandu');
     });
+  });
 
-    it('throws error when API returns an error response', async () => {
+  describe('getForecast mapping and fallbacks', () => {
+    beforeEach(() => {
+      process.env.WEATHER_API_KEY = 'valid-key';
+    });
+
+    it('throws fallback error message when response is not ok and JSON has no error message', async () => {
       global.fetch = vi.fn().mockResolvedValue({
         ok: false,
-        status: 400,
-        json: async () => ({
-          error: { message: 'No matching location found.' },
-        }),
+        status: 500,
+        json: async () => ({}),
       });
 
-      await expect(weatherService.getForecast('InvalidCityXYZ')).rejects.toThrow(
-        'No matching location found.'
+      await expect(weatherService.getForecast('City')).rejects.toThrow(
+        'Failed to fetch weather forecast (HTTP 500)'
       );
     });
 
-    it('parses weather forecast, rolling 24h hours, daily forecast, astronomy, and alerts', async () => {
+    it('parses complete weather forecast with all nested structures', async () => {
       const mockApiResponse = {
         location: {
           name: 'Douglas',
@@ -121,7 +193,7 @@ describe('weatherService', () => {
           temp_f: 64.4,
           humidity: 72,
           wind_kph: 15,
-          condition: { text: 'Partly cloudy', icon: '//cdn.weatherapi.com/116.png' },
+          condition: { text: 'Partly cloudy', icon: '//cdn.weatherapi.com/116.png', code: 1003 },
           air_quality: { 'us-epa-index': 1 },
         },
         forecast: {
@@ -132,7 +204,7 @@ describe('weatherService', () => {
               day: {
                 maxtemp_c: 20,
                 mintemp_c: 12,
-                condition: { text: 'Partly cloudy', icon: '//cdn.weatherapi.com/116.png' },
+                condition: { text: 'Partly cloudy', icon: '//cdn.weatherapi.com/116.png', code: 1003 },
               },
               astro: {
                 sunrise: '06:50 AM',
@@ -144,7 +216,7 @@ describe('weatherService', () => {
                   time: '2026-09-17 11:00',
                   time_epoch: 1726570800,
                   temp_c: 17,
-                  condition: { text: 'Partly cloudy' },
+                  condition: { text: 'Partly cloudy', icon: '//cdn.weatherapi.com/116.png', code: 1003 },
                 },
                 {
                   time: '2026-09-17 12:00',
@@ -189,8 +261,80 @@ describe('weatherService', () => {
       expect(result.alerts?.length).toBe(1);
       expect(result.alerts?.[0].headline).toBe('High Wind Warning');
     });
-  });
 
+    it('safely handles missing or empty hour arrays and nullish metrics', async () => {
+      const mockApiResponse = {
+        location: { name: 'Remote Outpost', country: 'Nowhere' },
+        current: {
+          last_updated_epoch: 1000000,
+          condition: {},
+        },
+        forecast: {
+          forecastday: [
+            {
+              date: '2026-09-17',
+              date_epoch: 1726531200,
+              // day.hour is omitted
+              day: {},
+            },
+            {
+              date: '2026-09-18',
+              date_epoch: 1726617600,
+              hour: 'not an array', // not an array
+              day: {},
+            },
+          ],
+        },
+      };
+
+      global.fetch = vi.fn().mockResolvedValue({
+        ok: true,
+        json: async () => mockApiResponse,
+      });
+
+      const result = await weatherService.getForecast('Remote Outpost');
+      expect(result.forecast).toEqual([]);
+      expect(result.dailyForecast).toHaveLength(2);
+      expect(result.dailyForecast[0].maxtemp_c).toBe(0);
+      expect(result.alerts).toEqual([]);
+      expect(result.currentForecast.air_quality).toBeUndefined();
+    });
+
+    it('falls back to allHours.slice(0, 24) when rolling24Hours is empty after filtering', async () => {
+      const mockApiResponse = {
+        location: { name: 'Past City', country: 'Pastland' },
+        current: {
+          last_updated_epoch: 2000000000, // Very far in future
+          condition: { text: 'Clear' },
+        },
+        forecast: {
+          forecastday: [
+            {
+              date: '2026-09-17',
+              date_epoch: 1726531200,
+              day: {},
+              hour: [
+                {
+                  time: '2026-09-17 01:00',
+                  time_epoch: 1000, // much earlier than activeHourEpoch
+                  temp_c: 15,
+                },
+              ],
+            },
+          ],
+        },
+      };
+
+      global.fetch = vi.fn().mockResolvedValue({
+        ok: true,
+        json: async () => mockApiResponse,
+      });
+
+      const result = await weatherService.getForecast('Past City');
+      expect(result.forecast).toHaveLength(1);
+      expect(result.forecast[0].temp_c).toBe(15);
+    });
+  });
 
   describe('searchLocations', () => {
     beforeEach(() => {
@@ -253,6 +397,20 @@ describe('weatherService', () => {
       const suggestions = await weatherService.searchLocations('Singapore');
       expect(suggestions).toHaveLength(1);
       expect(suggestions[0].name).toBe('Singapore, Singapore');
+    });
+
+    it('throws error when search response contains error property', async () => {
+      global.fetch = vi.fn().mockResolvedValue({
+        ok: false,
+        status: 400,
+        json: async () => ({
+          error: { message: 'API key has exceeded rate limit.' },
+        }),
+      });
+
+      await expect(weatherService.searchLocations('Douglas')).rejects.toThrow(
+        'API key has exceeded rate limit.'
+      );
     });
 
     it('throws fallback error when search request fails without error message', async () => {

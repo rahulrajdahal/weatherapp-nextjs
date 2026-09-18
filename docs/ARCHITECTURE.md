@@ -21,6 +21,7 @@ External WeatherAPI
 - **Client Boundaries**: The `"use client"` directive is reserved for components requiring browser APIs (`localStorage`, `navigator.geolocation`), event listeners, or interactive React state (`useState`, `useEffect`).
 - **Server Boundary for External APIs**: Direct calls to WeatherAPI with credentials occur strictly on the server inside Next.js Route Handlers (`app/api/weather/forecast` and `app/api/weather/search`).
 - **Data Transformation**: Upstream API schemas are converted into clean domain types (`lib/types/weather.ts`) inside the service layer before reaching UI components.
+- **Error & Fallback Handling**: `app/error.tsx` provides runtime recovery, `app/global-error.tsx` catches layout crashes, and `app/not-found.tsx` provides an accessible, atmospheric recovery experience for invalid routes.
 
 ## Caching & Rendering Strategies
 - **Current Conditions**: Cached for ~10 minutes.

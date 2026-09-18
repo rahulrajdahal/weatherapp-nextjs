@@ -1,11 +1,38 @@
-import { describe, expect, it } from 'vitest';
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
+
+let states: any[] = [];
+let stateIndex = 0;
+let effectFn: (() => void | (() => void)) | undefined = undefined;
+let renderCallback: (() => void) | undefined = undefined;
+
+vi.mock('react', () => ({
+  useState: (initial: any) => {
+    const currentIndex = stateIndex++;
+    if (states[currentIndex] === undefined) {
+      states[currentIndex] = typeof initial === 'function' ? initial() : initial;
+    }
+    const setState = (newVal: any) => {
+      states[currentIndex] = typeof newVal === 'function' ? newVal(states[currentIndex]) : newVal;
+      if (renderCallback) {
+        renderCallback();
+      }
+    };
+    return [states[currentIndex], setState];
+  },
+  useEffect: (cb: () => void | (() => void)) => {
+    effectFn = cb;
+  },
+}));
+
 import {
   DEFAULT_FAVORITES,
+  FAVORITES_STORAGE_KEY,
   addFavoriteEntry,
   isFavoriteMatch,
   migrateLegacyFavorites,
   normalizeCity,
   removeFavoriteEntry,
+  useFavorites,
 } from './useFavorites';
 
 describe('useFavorites domain logic', () => {
@@ -125,5 +152,130 @@ describe('useFavorites domain logic', () => {
       const updated = removeFavoriteEntry(listWithLondon, 'London');
       expect(updated).toEqual([]);
     });
+  });
+});
+
+describe('useFavorites hook', () => {
+  let mockStorage: Record<string, string>;
+
+  function renderFavoritesHook() {
+    let currentHook!: ReturnType<typeof useFavorites>;
+    const render = () => {
+      stateIndex = 0;
+      currentHook = useFavorites();
+    };
+    renderCallback = render;
+    render();
+    effectFn?.();
+    return {
+      get current() {
+        return currentHook;
+      },
+    };
+  }
+
+  beforeEach(() => {
+    states = [];
+    stateIndex = 0;
+    effectFn = undefined;
+    renderCallback = undefined;
+    mockStorage = {};
+
+    const localStorageMock = {
+      getItem: vi.fn((key: string) => mockStorage[key] ?? null),
+      setItem: vi.fn((key: string, val: string) => {
+        mockStorage[key] = val;
+      }),
+      removeItem: vi.fn((key: string) => {
+        delete mockStorage[key];
+      }),
+      clear: vi.fn(() => {
+        mockStorage = {};
+      }),
+    };
+
+    vi.stubGlobal('localStorage', localStorageMock);
+  });
+
+  afterEach(() => {
+    vi.unstubAllGlobals();
+    vi.clearAllMocks();
+  });
+
+  it('initializes localStorage with DEFAULT_FAVORITES when no existing storage is found', () => {
+    const runner = renderFavoritesHook();
+    expect(runner.current.isLoaded).toBe(true);
+    expect(runner.current.favorites).toEqual(DEFAULT_FAVORITES);
+    expect(localStorage.setItem).toHaveBeenCalledWith(
+      FAVORITES_STORAGE_KEY,
+      JSON.stringify(DEFAULT_FAVORITES)
+    );
+  });
+
+  it('loads and migrates legacy favorites from localStorage', () => {
+    mockStorage[FAVORITES_STORAGE_KEY] = JSON.stringify(['Douglas', 'Auckland']);
+
+    const runner = renderFavoritesHook();
+
+    expect(runner.current.favorites).toEqual(['Douglas, Isle of Man', 'Auckland']);
+    expect(localStorage.setItem).toHaveBeenCalledWith(
+      FAVORITES_STORAGE_KEY,
+      JSON.stringify(['Douglas, Isle of Man', 'Auckland'])
+    );
+  });
+
+  it('safely handles empty array or invalid JSON in localStorage', () => {
+    mockStorage[FAVORITES_STORAGE_KEY] = JSON.stringify([]);
+
+    const runner = renderFavoritesHook();
+    expect(runner.current.isLoaded).toBe(true);
+
+    // Corrupt JSON
+    mockStorage[FAVORITES_STORAGE_KEY] = '{invalid json';
+    states = [];
+    const runner2 = renderFavoritesHook();
+    expect(runner2.current.isLoaded).toBe(true);
+  });
+
+  it('allows adding, removing, and checking favorites', () => {
+    const runner = renderFavoritesHook();
+
+    // Add favorite
+    runner.current.addFavorite('Paris', 'France');
+    expect(runner.current.favorites).toContain('Paris, France');
+
+    // Duplicate add should not re-persist
+    const setItemCallCount = vi.mocked(localStorage.setItem).mock.calls.length;
+    runner.current.addFavorite('Paris', 'France');
+    expect(vi.mocked(localStorage.setItem).mock.calls.length).toBe(setItemCallCount);
+
+    // isFavorite check
+    expect(runner.current.isFavorite('Paris', 'France')).toBe(true);
+    expect(runner.current.isFavorite('Tokyo', 'Japan')).toBe(false);
+
+    // Remove favorite
+    runner.current.removeFavorite('Paris, France');
+    expect(runner.current.favorites).not.toContain('Paris, France');
+  });
+
+  it('supports toggleFavorite to add or remove cities', () => {
+    const runner = renderFavoritesHook();
+
+    // Toggle on
+    runner.current.toggleFavorite('Kathmandu', 'Nepal');
+    expect(runner.current.favorites).toContain('Kathmandu, Nepal');
+
+    // Toggle off
+    runner.current.toggleFavorite('Kathmandu', 'Nepal');
+    expect(runner.current.favorites).not.toContain('Kathmandu, Nepal');
+  });
+
+  it('gracefully handles localStorage.setItem exceptions (e.g. quota exceeded)', () => {
+    vi.mocked(localStorage.setItem).mockImplementation(() => {
+      throw new Error('QuotaExceededError');
+    });
+
+    const runner = renderFavoritesHook();
+    expect(() => runner.current.addFavorite('NewCity', 'Country')).not.toThrow();
   });
 });
