@@ -147,7 +147,8 @@ Open [http://localhost:3000](http://localhost:3000) in your browser to view the 
 | `npm run dev` | Starts the Next.js local development server at `localhost:3000`. |
 | `npm run build` | Compiles the optimized production application. |
 | `npm run start` | Runs the compiled production build locally. |
-| `npm run lint` | Checks TypeScript type integrity across the codebase (`tsc --noEmit`). |
+| `npm run typecheck` | Validates TypeScript types across the codebase (`tsc --noEmit`). |
+| `npm run lint` | Runs Next.js ESLint checks (`next lint`). |
 | `npm run test:unit` | Runs Vitest unit and integration test suites. |
 | `npm run test:watch` | Runs Vitest in interactive watch mode for active development. |
 | `npm run test:coverage` | Generates a detailed V8 code coverage report in `./coverage`. |
@@ -181,7 +182,7 @@ Automated checks run on every pull request and push to `main` via GitHub Actions
 
 ```
 Push / Pull Request
-  ├── 1. Lint & Typecheck (tsc --noEmit)
+  ├── 1. Lint & Typecheck (tsc --noEmit, next lint)
   ├── 2. Unit Tests & V8 Coverage (vitest --coverage)
   ├── 3. Storybook Build (storybook build)
   ├── 4. Production Next.js Build (next build)

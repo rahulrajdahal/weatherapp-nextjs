@@ -23,7 +23,10 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Run Typecheck / Lint
+      - name: Run Typecheck
+        run: npm run typecheck
+
+      - name: Run Lint
         run: npm run lint
 
   unit-tests-and-coverage:
@@ -100,6 +103,7 @@ jobs:
           name: build
           if-no-files-found: error
           path: .next
+          include-hidden-files: true
 
   cypress-tests:
     name: Cypress Component & E2E Tests
