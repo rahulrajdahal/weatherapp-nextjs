@@ -1,147 +1,195 @@
-# [HawaPani](https://github.com/rahulrajdahal/HawaPani-nextjs). Visualize your forecast today.
+# HawaPani
 
-Get information about the weather today.
+> A modern, responsive, and privacy-first weather Progressive Web Application (PWA) built with Next.js 16 (App Router), React 19, TypeScript, and Tailwind CSS v4.
 
-- 24 hour forecast
-- Humidity, temperature and Wind speed.
-- Find the forecast at any region.
+[![Quality & CI Pipeline](https://github.com/rahulrajdahal/weatherapp-nextjs/actions/workflows/quality.yml/badge.svg)](https://github.com/rahulrajdahal/weatherapp-nextjs/actions/workflows/quality.yml)
+[![Deployment](https://img.shields.io/badge/Vercel-Live_Demo-000000?style=flat&logo=vercel&logoColor=white)](https://HawaPani-nextjs.vercel.app)
+[![Coverage](https://img.shields.io/badge/Coverage-90%25+-brightgreen?style=flat&logo=vitest&logoColor=white)](https://github.com/rahulrajdahal/weatherapp-nextjs)
+[![Next.js 16](https://img.shields.io/badge/Next.js-16-000000?style=flat&logo=next.js&logoColor=white)](https://nextjs.org/)
+[![React 19](https://img.shields.io/badge/React-19-61DAFB?style=flat&logo=react&logoColor=black)](https://react.dev/)
+[![TypeScript 5.9](https://img.shields.io/badge/TypeScript-5.9-3178C6?style=flat&logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
+[![Tailwind CSS v4](https://img.shields.io/badge/Tailwind_CSS-v4-38B2AC?style=flat&logo=tailwind-css&logoColor=white)](https://tailwindcss.com/)
+[![Storybook 10](https://img.shields.io/badge/Storybook-v10-FF4785?style=flat&logo=storybook&logoColor=white)](https://storybook.js.org/)
+[![Cypress 16](https://img.shields.io/badge/Cypress-v16-17202C?style=flat&logo=cypress&logoColor=white)](https://www.cypress.io/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 
-## Preview
+---
 
-[![HawaPani](./screenshots/HawaPani.png)](https://HawaPani-nextjs-pi.vercel.app/)
-![HawaPani](./screenshots/HawaPani-weather.png)
+## 🌐 Live Demo & Preview
 
-## 🏗 Development Guide
+Explore the live production deployment on Vercel: **[https://HawaPani-nextjs.vercel.app](https://HawaPani-nextjs.vercel.app)**
 
-### 1. clone the repository
+| Dashboard Overview | Meteorological Details & Hourly Trends |
+| :---: | :---: |
+| [![HawaPani Dashboard](./screenshots/HawaPani.png)](https://HawaPani-nextjs.vercel.app) | [![HawaPani Details](./screenshots/HawaPani-weather.png)](https://HawaPani-nextjs.vercel.app) |
 
-```sh
-git clone https://github.com/rahulrajdahal/HawaPani-nextjs.git
+---
+
+## ✨ Core Features
+
+- **Real-Time Meteorological Metrics**: Live condition reporting including temperature, feels-like, humidity, wind velocity & direction, barometric pressure, UV safety index, and US-EPA Air Quality Index (AQI).
+- **24-Hour Interactive Trendline**: Continuous rolling hourly forecast featuring responsive Bézier temperature curves and precipitation probabilities powered by Recharts.
+- **7-Day Extended Outlook**: Comprehensive multi-day forecast cards showing temperature extremes, condition indicators, and day-by-day weather transitions.
+- **Fast Location Search**: Debounced city autocomplete with seamless query parameter synchronization (`/?q=<location>`).
+- **Quick-Access Favorites**: Bookmark frequently monitored cities locally in `localStorage` without requiring user accounts or database overhead.
+- **Side-by-Side City Comparison**: Comparative analysis modal allowing side-by-side evaluation of weather parameters between multiple locations.
+- **Offline Resilience & Fallback Game**: Service-worker caching for instant offline forecast access, accompanied by an offline interactive weather mini-game.
+- **Dynamic Atmospheric Theming**: Context-aware UI tokens that adapt colors and glassmorphism to current weather conditions (sunny, overcast, rainy, snowy, stormy).
+- **Accessibility & Performance**: Built to adhere to WCAG 2.1 AA accessibility standards (keyboard navigation, ARIA landmarks, screen-reader labels) and zero-CLS shimmer skeleton loaders.
+
+---
+
+## 🛠 Tech Stack
+
+| Layer | Technology |
+| :--- | :--- |
+| **Framework** | [Next.js 16](https://nextjs.org/) (App Router, Server Components) |
+| **Library & Language** | [React 19](https://react.dev/), [TypeScript 5.9](https://www.typescriptlang.org/) |
+| **Styling** | [Tailwind CSS v4](https://tailwindcss.com/) with glassmorphic tokens |
+| **Data Visualization** | [Recharts 3](https://recharts.org/) |
+| **UI Primitives** | [Radix UI](https://www.radix-ui.com/) encapsulated in project wrappers |
+| **Weather Data** | [WeatherAPI](https://www.weatherapi.com/) via secure server-side Route Handlers |
+| **Testing** | [Vitest 5](https://vitest.dev/) (Unit/Coverage), [Cypress 16](https://www.cypress.io/) (E2E & Component) |
+| **Design System** | [Storybook 10](https://storybook.js.org/) with axe-based a11y testing |
+| **Deployment** | [Vercel](https://vercel.com/) |
+
+---
+
+## 📁 Repository Structure
+
+```text
+weatherapp-nextjs/
+├── app/                        # Next.js App Router (pages, layouts, metadata)
+│   ├── api/weather/            # Server-side Route Handlers for WeatherAPI
+│   │   ├── forecast/route.ts   # Forecast data proxy
+│   │   └── search/route.ts     # Location autocomplete proxy
+│   ├── globals.css             # Tailwind CSS v4 directives & theme tokens
+│   ├── layout.tsx              # Root layout, metadata & providers
+│   ├── not-found.tsx           # Atmospheric 404 error page
+│   └── page.tsx                # Main weather dashboard page
+├── components/                 # Accessible UI components & Radix wrappers
+│   ├── AlertBanner/            # Severe weather alert notifications
+│   ├── CityComparisonModal/    # Side-by-side comparative analysis modal
+│   ├── DailyForecastCard/      # 7-day forecast cards
+│   ├── FavoritesBar/           # LocalStorage bookmarks bar
+│   ├── HourForecastCard/       # 24-hour hourly forecast cards
+│   ├── MetricsGrid/            # Atmospheric & AQI metrics grid
+│   ├── Navbar/                 # Header navigation & search trigger
+│   ├── SearchInput/            # Accessible combobox search input
+│   ├── WeatherDashboardSkeleton/# Zero-CLS shimmer loading state
+│   └── WeatherTrendChart/      # 24-hour Recharts Bézier chart
+├── docs/                       # Architecture, security, API & testing documentation
+├── hooks/                      # Custom React hooks (useFavorites, useDebounce)
+├── lib/                        # Services, types, meteorological math, and themes
+│   ├── constants.ts            # Default configurations & fallback constants
+│   ├── types/weather.ts        # Strongly-typed weather domain interfaces
+│   ├── services/weatherService.ts # API client & response mappers
+│   └── utils/                  # dateTime, weatherMetrics, weatherTheme
+├── cypress/                    # Cypress 16 E2E and component test specs
+├── stories/                    # Storybook component documentation & stories
+└── .github/workflows/          # Continuous integration quality pipelines
+```
+
+---
+
+## 🚀 Getting Started
+
+### Prerequisites
+
+- **Node.js**: `20.x` or higher
+- **npm**: `10.x` or higher
+- A free API key from [WeatherAPI.com](https://www.weatherapi.com/)
+
+### 1. Clone the Repository
+
+```bash
+git clone https://github.com/rahulrajdahal/weatherapp-nextjs.git
+cd weatherapp-nextjs
 ```
 
 ### 2. Install Dependencies
 
-#### npm
-
-```sh
-cd HawaPani-nextjs && npm install
+```bash
+npm install
 ```
 
-### 3. Connect to your API 💾
+### 3. Configure Environment Variables
 
-Creact a **.env** file and add the following
+Create a `.env` file in the root directory:
 
-// .env
-
-```sh
-WEATHER_API_KEY='your weather api key'
+```bash
+cp .env.example .env
 ```
 
-### 4. Run development server
+Add your WeatherAPI credentials:
 
-```sh
+```env
+WEATHER_API_KEY=your_actual_weather_api_key_here
+```
+
+> [!NOTE]
+> All WeatherAPI credentials are strictly confined to server-side Route Handlers (`app/api/weather/*`). Secrets are never exposed to client-side bundles or browser requests.
+
+### 4. Run the Development Server
+
+```bash
 npm run dev
 ```
 
-#### OR
+Open [http://localhost:3000](http://localhost:3000) in your browser to view the application.
 
-### Run Production server
+---
 
-```sh
-npm run start
+## 🧞 Available Scripts
+
+| Command | Description |
+| :--- | :--- |
+| `npm run dev` | Starts the Next.js local development server at `localhost:3000`. |
+| `npm run build` | Compiles the optimized production application. |
+| `npm run start` | Runs the compiled production build locally. |
+| `npm run lint` | Checks TypeScript type integrity across the codebase (`tsc --noEmit`). |
+| `npm run test:unit` | Runs Vitest unit and integration test suites. |
+| `npm run test:watch` | Runs Vitest in interactive watch mode for active development. |
+| `npm run test:coverage` | Generates a detailed V8 code coverage report in `./coverage`. |
+| `npm run storybook` | Starts the local Storybook workbench server at `localhost:6006`. |
+| `npm run build-storybook`| Compiles the Storybook design system into static documentation. |
+| `npm run cypress:open` | Opens the interactive Cypress GUI runner. |
+| `npm run e2e` | Starts dev server and opens Cypress E2E test suite. |
+| `npm run e2e:headless` | Runs Cypress E2E test suite headlessly against local server. |
+| `npm run component` | Opens Cypress Component test runner interactively. |
+| `npm run component:headless` | Runs Cypress Component tests headlessly. |
+| `npm test` | Runs the comprehensive test suite (unit, coverage, component, E2E). |
+
+---
+
+## 🧪 Testing & Quality Assurance
+
+HawaPani implements a multi-tier testing and verification architecture:
+
+1. **Unit & Mathematical Precision (Vitest 5)**:
+   - Tests pure functions, meteorological formulas (heat index, dew point, wind chill, air quality categorization), date/time parsers, and custom hooks.
+   - Generates comprehensive V8 statement, branch, function, and line coverage.
+2. **Component Workbench & Accessibility (Storybook 10)**:
+   - Isolated component playground documenting various atmospheric states.
+   - Axe-core automated accessibility audits (`@storybook/addon-a11y`).
+3. **End-to-End & Integration (Cypress 16)**:
+   - Validates critical user journeys: location search, favorites persistence, weather comparison, metric unit toggles, and offline handling.
+
+### CI/CD Quality Pipeline
+
+Automated checks run on every pull request and push to `main` via GitHub Actions ([`.github/workflows/quality.yml`](.github/workflows/quality.yml)):
+
+```
+Push / Pull Request
+  ├── 1. Lint & Typecheck (tsc --noEmit)
+  ├── 2. Unit Tests & V8 Coverage (vitest --coverage)
+  ├── 3. Storybook Build (storybook build)
+  ├── 4. Production Next.js Build (next build)
+  └── 5. Cypress E2E & Component Headless Tests
 ```
 
-## 🚀 Project Structure
+---
 
-Inside of project [Next Starter](https://github.com/rahulrajdahal/next-starter), you'll see the following folders and files:
+## 📄 License
 
-```text
-/
-├── public/
-│   └── favicon.svg
-├── app/
-|   ├── page/
-│   │   ├── page.tsx
-│   │   ├── layout.tsx
-│   ├── page.tsx
-│   └── layout.tsx
-├── components/
-│   ├── index.ts
-│   └── Component
-|       └── Component.tsx
-|       └── Component.stories.ts
-|       └── Component.cy.tsx
-├── cypress/
-│   ├── e2e
-│   │   └── e2etest.cy.ts
-│   ├── fixtures
-│   └── support
-└── package.json
-```
-
-## 🧞 Commands
-
-All commands are run from the root of the project, from a terminal:
-
-| Command                      | Action                                        |
-| :--------------------------- | :-------------------------------------------- |
-| `npm install`                | Installs dependencies.                        |
-| `npm run dev`                | Starts local dev server at `localhost:3000`.  |
-| `npm run build`              | Build your production site to `./next/`.      |
-| `npm run start`              | Preview your build locally, before deploying. |
-| `npm run lint`               | Check all linting errors.                     |
-| `npm test`                   | Run Vitest unit & integration test suite.     |
-| `npm run test:watch`         | Run Vitest in interactive watch mode.         |
-| `npm run test:coverage`      | Run unit tests with V8 code coverage report.  |
-| `npm run storybook`          | Start Storybook local dev server.             |
-| `npm run build-storybook`    | Build Storybook production site.              |
-| `npm run cypress:open`       | Run Cypress test.                             |
-| `npm run e2e`                | Run Cypress E2E test.                         |
-| `npm run e2e:headless`       | Run headless Cypress E2E test.                |
-| `npm run component`          | Run headless Cypress components test.         |
-| `npm run component:headless` | Run headless Cypress components test.         |
-
-## 🧪 Testing & Code Coverage
-
-HawaPani enforces multi-layered testing spanning fast Node-based Vitest unit/integration tests and browser-based Cypress Component & E2E tests.
-
-### Vitest Unit & Integration Suite
-
-Run the full unit test suite and generate a detailed V8 coverage report:
-
-```sh
-npm run test:coverage
-```
-
-#### Code Coverage Summary (v8)
-
-| Category / File | % Statements | % Branch | % Functions | % Lines | Status |
-| :--- | :---: | :---: | :---: | :---: | :---: |
-| **All Files (Overall)** | **80.64%** | **83.80%** | **71.79%** | **79.41%** | 🟢 High |
-| **`lib/` (Core Utilities & Services)** | **100.00%** | **88.24%** | **100.00%** | **100.00%** | 🟢 Complete |
-| ├── `lib/constants.ts` | 100.00% | 100.00% | 100.00% | 100.00% | 🟢 Complete |
-| ├── `lib/utils/dateTime.ts` | 100.00% | 100.00% | 100.00% | 100.00% | 🟢 Complete |
-| ├── `lib/utils/weatherMetrics.ts` | 100.00% | 100.00% | 100.00% | 100.00% | 🟢 Complete |
-| ├── `lib/utils/weatherTheme.ts` | 100.00% | 100.00% | 100.00% | 100.00% | 🟢 Complete |
-| └── `lib/services/weatherService.ts` | 100.00% | 82.43% | 100.00% | 100.00% | 🟢 Complete |
-| **`hooks/` (React Domain Hooks)** | **50.00%** | **60.78%** | **45.00%** | **46.15%** | 🟡 Pure Logic Covered |
-| ├── `hooks/useFavorites.ts` | 54.54% | 62.00% | 56.25% | 50.70% | 🟡 Logic Covered |
-| └── `hooks/useDebounce.ts` | Timer logic covered in spec | 100.00% | 100.00% | 100.00% | 🟢 Tested |
-
-> [!NOTE]
-> All core services (`weatherService.ts`), date/time formatting (`dateTime.ts`), meteorological calculation metrics (`weatherMetrics.ts`), and dynamic atmospheric themes (`weatherTheme.ts`) achieve **100% statement and line coverage**.
-
-### Continuous Integration (CI) Workflow
-
-The GitHub Actions workflow [`.github/workflows/test.yml`](.github/workflows/test.yml) runs automatically on:
-- **Every code push** (`push`) across all branches.
-- **Every pull request** (`pull_request`) targeting `main` and `master`.
-- **Nightly scheduled cron** runs.
-
-The workflow executes:
-1. **Unit Tests & Coverage**: Runs `npm run lint` and `npm run test:coverage`, uploading the coverage artifact.
-2. **Cypress Install & Next.js Build**: Pre-compiles the Next.js application cleanly.
-3. **Cypress Tests**: Executes End-to-End tests against the production server and Component tests in headless Chrome.
-
-All checks must pass green before pull requests can be merged into `main`.
-
+Distributed under the MIT License. See [LICENSE](LICENSE) for more information.

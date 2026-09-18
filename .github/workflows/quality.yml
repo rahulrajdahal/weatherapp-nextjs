@@ -94,6 +94,13 @@ jobs:
           WEATHER_APIKEY: ${{ secrets.WEATHER_API_KEY || secrets.CYPRESS_WEATHER_API_KEY || secrets.WEATHER_APIKEY || 'demo-key' }}
         run: npm run build
 
+      - name: Save build folder
+        uses: actions/upload-artifact@v4
+        with:
+          name: build
+          if-no-files-found: error
+          path: .next
+
   cypress-tests:
     name: Cypress Component & E2E Tests
     runs-on: ubuntu-latest
@@ -108,14 +115,39 @@ jobs:
           node-version: 20
           cache: "npm"
 
-      - name: Cypress Headless Runner
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Download the build folder
+        uses: actions/download-artifact@v4
+        with:
+          name: build
+          path: .next
+
+      - name: Create cypress env
+        env:
+          API_KEY: ${{ secrets.WEATHER_API_KEY || secrets.CYPRESS_WEATHER_API_KEY || secrets.WEATHER_APIKEY || 'demo-key' }}
+        run: |
+          node -e "const fs=require('fs'); fs.writeFileSync('cypress.env.json', JSON.stringify({ WEATHER_API_KEY: process.env.API_KEY }));"
+
+      - name: Cypress Headless Runner (E2E)
         uses: cypress-io/github-action@v6
         env:
           WEATHER_API_KEY: ${{ secrets.WEATHER_API_KEY || secrets.CYPRESS_WEATHER_API_KEY || secrets.WEATHER_APIKEY || 'demo-key' }}
           WEATHER_APIKEY: ${{ secrets.WEATHER_API_KEY || secrets.CYPRESS_WEATHER_API_KEY || secrets.WEATHER_APIKEY || 'demo-key' }}
         with:
-          build: npm run build
+          install: false
           start: npm start
           wait-on: "http://localhost:3000"
           wait-on-timeout: 120
+          browser: chrome
+
+      - name: Cypress Headless Runner (Component)
+        uses: cypress-io/github-action@v6
+        env:
+          WEATHER_API_KEY: ${{ secrets.WEATHER_API_KEY || secrets.CYPRESS_WEATHER_API_KEY || secrets.WEATHER_APIKEY || 'demo-key' }}
+          WEATHER_APIKEY: ${{ secrets.WEATHER_API_KEY || secrets.CYPRESS_WEATHER_API_KEY || secrets.WEATHER_APIKEY || 'demo-key' }}
+        with:
+          install: false
+          component: true
           browser: chrome
