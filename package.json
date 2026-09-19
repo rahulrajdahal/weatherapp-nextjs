@@ -8,10 +8,10 @@
   "homepage": "https://hawapani.vercel.app",
   "repository": {
     "type": "git",
-    "url": "https://github.com/rahulrajdahal/weatherapp-nextjs.git"
+    "url": "https://github.com/rahulrajdahal/hawapani.git"
   },
   "bugs": {
-    "url": "https://github.com/rahulrajdahal/weatherapp-nextjs/issues"
+    "url": "https://github.com/rahulrajdahal/hawapani/issues"
   },
   "keywords": [
     "hawapani",

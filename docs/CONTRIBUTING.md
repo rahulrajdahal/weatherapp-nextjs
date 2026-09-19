@@ -1,6 +1,7 @@
 # Contributing Guidelines
 
 ## Development Workflow
+
 1. Create a dedicated branch off `main`:
    - `feature/<short-description>`
    - `fix/<short-description>`
@@ -21,6 +22,3 @@
    - `fix(search): handle zero-result location gracefully`
    - `test(chart): add screen-reader table summary specs`
 5. Open a Pull Request targeting `main`. Ensure all CI checks pass.
-
-## Local AI Files Staging Notice
-Remember that `AGENTS.md`, `CLAUDE.md`, and `.agents/` are local AI operating files that remain outside version control. Do not stage these files when preparing commits.

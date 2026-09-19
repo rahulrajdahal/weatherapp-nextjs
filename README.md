@@ -2,9 +2,9 @@
 
 > A modern, responsive, and privacy-first weather Progressive Web Application (PWA) built with Next.js 16 (App Router), React 19, TypeScript, and Tailwind CSS v4.
 
-[![Quality & CI Pipeline](https://github.com/rahulrajdahal/weatherapp-nextjs/actions/workflows/quality.yml/badge.svg)](https://github.com/rahulrajdahal/weatherapp-nextjs/actions/workflows/quality.yml)
+[![Quality & CI Pipeline](https://github.com/rahulrajdahal/hawapani/actions/workflows/quality.yml/badge.svg)](https://github.com/rahulrajdahal/hawapani/actions/workflows/quality.yml)
 [![Deployment](https://img.shields.io/badge/Vercel-Live_Demo-000000?style=flat&logo=vercel&logoColor=white)](https://HawaPani-nextjs.vercel.app)
-[![Coverage](https://img.shields.io/badge/Coverage-90%25+-brightgreen?style=flat&logo=vitest&logoColor=white)](https://github.com/rahulrajdahal/weatherapp-nextjs)
+[![Coverage](https://img.shields.io/badge/Coverage-90%25+-brightgreen?style=flat&logo=vitest&logoColor=white)](https://github.com/rahulrajdahal/hawapani)
 [![Next.js 16](https://img.shields.io/badge/Next.js-16-000000?style=flat&logo=next.js&logoColor=white)](https://nextjs.org/)
 [![React 19](https://img.shields.io/badge/React-19-61DAFB?style=flat&logo=react&logoColor=black)](https://react.dev/)
 [![TypeScript 5.9](https://img.shields.io/badge/TypeScript-5.9-3178C6?style=flat&logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
@@ -58,7 +58,7 @@ Explore the live production deployment on Vercel: **[https://hawapani.vercel.app
 ## 📁 Repository Structure
 
 ```text
-weatherapp-nextjs/
+hawapani/
 ├── app/                        # Next.js App Router (pages, layouts, metadata)
 │   ├── api/weather/            # Server-side Route Handlers for WeatherAPI
 │   │   ├── forecast/route.ts   # Forecast data proxy
@@ -103,8 +103,8 @@ weatherapp-nextjs/
 ### 1. Clone the Repository
 
 ```bash
-git clone https://github.com/rahulrajdahal/weatherapp-nextjs.git
-cd weatherapp-nextjs
+git clone https://github.com/rahulrajdahal/hawapani.git
+cd hawapani
 ```
 
 ### 2. Install Dependencies
