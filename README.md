@@ -19,7 +19,7 @@
 
 Explore the live production deployment on Vercel: **[https://hawapani.vercel.app](https://hawapani.vercel.app)**
 
-|                                Dashboard Overview                                |                      Meteorological Details & Hourly Trends                       |
+|                                Dashboard Overview                                |                                  7 Day Forecast                                   |
 | :------------------------------------------------------------------------------: | :-------------------------------------------------------------------------------: |
 | [![HawaPani Dashboard](./screenshots/hawapani.png)](https://hawapani.vercel.app) | [![HawaPani Details](./screenshots/hawapani-7d.png)](https://hawapani.vercel.app) |
 
@@ -59,35 +59,35 @@ Explore the live production deployment on Vercel: **[https://hawapani.vercel.app
 
 ```text
 hawapani/
-├── app/                        # Next.js App Router (pages, layouts, metadata)
-│   ├── api/weather/            # Server-side Route Handlers for WeatherAPI
-│   │   ├── forecast/route.ts   # Forecast data proxy
-│   │   └── search/route.ts     # Location autocomplete proxy
-│   ├── globals.css             # Tailwind CSS v4 directives & theme tokens
-│   ├── layout.tsx              # Root layout, metadata & providers
-│   ├── not-found.tsx           # Atmospheric 404 error page
-│   └── page.tsx                # Main weather dashboard page
-├── components/                 # Accessible UI components & Radix wrappers
-│   ├── AlertBanner/            # Severe weather alert notifications
-│   ├── CityComparisonModal/    # Side-by-side comparative analysis modal
-│   ├── DailyForecastCard/      # 7-day forecast cards
-│   ├── FavoritesBar/           # LocalStorage bookmarks bar
-│   ├── HourForecastCard/       # 24-hour hourly forecast cards
-│   ├── MetricsGrid/            # Atmospheric & AQI metrics grid
-│   ├── Navbar/                 # Header navigation & search trigger
-│   ├── SearchInput/            # Accessible combobox search input
-│   ├── WeatherDashboardSkeleton/# Zero-CLS shimmer loading state
-│   └── WeatherTrendChart/      # 24-hour Recharts Bézier chart
-├── docs/                       # Architecture, security, API & testing documentation
-├── hooks/                      # Custom React hooks (useFavorites, useDebounce)
-├── lib/                        # Services, types, meteorological math, and themes
-│   ├── constants.ts            # Default configurations & fallback constants
-│   ├── types/weather.ts        # Strongly-typed weather domain interfaces
+├── app/                          # Next.js App Router (pages, layouts, metadata)
+│   ├── api/weather/              # Server-side Route Handlers for WeatherAPI
+│   │   ├── forecast/route.ts     # Forecast data proxy
+│   │   └── search/route.ts       # Location autocomplete proxy
+│   ├── globals.css               # Tailwind CSS v4 directives & theme tokens
+│   ├── layout.tsx                # Root layout, metadata & providers
+│   ├── not-found.tsx             # Atmospheric 404 error page
+│   └── page.tsx                  # Main weather dashboard page
+├── components/                   # Accessible UI components & Radix wrappers
+│   ├── AlertBanner/              # Severe weather alert notifications
+│   ├── CityComparisonModal/      # Side-by-side comparative analysis modal
+│   ├── DailyForecastCard/        # 7-day forecast cards
+│   ├── FavoritesBar/             # LocalStorage bookmarks bar
+│   ├── HourForecastCard/         # 24-hour hourly forecast cards
+│   ├── MetricsGrid/              # Atmospheric & AQI metrics grid
+│   ├── Navbar/                   # Header navigation & search trigger
+│   ├── SearchInput/              # Accessible combobox search input
+│   ├── WeatherDashboardSkeleton/ # Zero-CLS shimmer loading state
+│   └── WeatherTrendChart/        # 24-hour Recharts Bézier chart
+├── docs/                         # Architecture, security, API & testing documentation
+├── hooks/                        # Custom React hooks (useFavorites, useDebounce)
+├── lib/                          # Services, types, meteorological math, and themes
+│   ├── constants.ts              # Default configurations & fallback constants
+│   ├── types/weather.ts          # Strongly-typed weather domain interfaces
 │   ├── services/weatherService.ts # API client & response mappers
-│   └── utils/                  # dateTime, weatherMetrics, weatherTheme
-├── cypress/                    # Cypress 16 E2E and component test specs
-├── stories/                    # Storybook component documentation & stories
-└── .github/workflows/          # Continuous integration quality pipelines
+│   └── utils/                    # dateTime, weatherMetrics, weatherTheme
+├── cypress/                      # Cypress 16 E2E and component test specs
+├── stories/                      # Storybook component documentation & stories
+└── .github/workflows/            # Continuous integration quality pipelines
 ```
 
 ---
