@@ -17,11 +17,11 @@
 
 ## 🌐 Live Demo & Preview
 
-Explore the live production deployment on Vercel: **[https://HawaPani-nextjs.vercel.app](https://HawaPani-nextjs.vercel.app)**
+Explore the live production deployment on Vercel: **[https://hawapani.vercel.app](https://hawapani.vercel.app)**
 
-| Dashboard Overview | Meteorological Details & Hourly Trends |
-| :---: | :---: |
-| [![HawaPani Dashboard](./screenshots/HawaPani.png)](https://HawaPani-nextjs.vercel.app) | [![HawaPani Details](./screenshots/HawaPani-weather.png)](https://HawaPani-nextjs.vercel.app) |
+|                                Dashboard Overview                                |                      Meteorological Details & Hourly Trends                       |
+| :------------------------------------------------------------------------------: | :-------------------------------------------------------------------------------: |
+| [![HawaPani Dashboard](./screenshots/hawapani.png)](https://hawapani.vercel.app) | [![HawaPani Details](./screenshots/hawapani-7d.png)](https://hawapani.vercel.app) |
 
 ---
 
@@ -41,17 +41,17 @@ Explore the live production deployment on Vercel: **[https://HawaPani-nextjs.ver
 
 ## 🛠 Tech Stack
 
-| Layer | Technology |
-| :--- | :--- |
-| **Framework** | [Next.js 16](https://nextjs.org/) (App Router, Server Components) |
-| **Library & Language** | [React 19](https://react.dev/), [TypeScript 5.9](https://www.typescriptlang.org/) |
-| **Styling** | [Tailwind CSS v4](https://tailwindcss.com/) with glassmorphic tokens |
-| **Data Visualization** | [Recharts 3](https://recharts.org/) |
-| **UI Primitives** | [Radix UI](https://www.radix-ui.com/) encapsulated in project wrappers |
-| **Weather Data** | [WeatherAPI](https://www.weatherapi.com/) via secure server-side Route Handlers |
-| **Testing** | [Vitest 5](https://vitest.dev/) (Unit/Coverage), [Cypress 16](https://www.cypress.io/) (E2E & Component) |
-| **Design System** | [Storybook 10](https://storybook.js.org/) with axe-based a11y testing |
-| **Deployment** | [Vercel](https://vercel.com/) |
+| Layer                  | Technology                                                                                               |
+| :--------------------- | :------------------------------------------------------------------------------------------------------- |
+| **Framework**          | [Next.js 16](https://nextjs.org/) (App Router, Server Components)                                        |
+| **Library & Language** | [React 19](https://react.dev/), [TypeScript 5.9](https://www.typescriptlang.org/)                        |
+| **Styling**            | [Tailwind CSS v4](https://tailwindcss.com/) with glassmorphic tokens                                     |
+| **Data Visualization** | [Recharts 3](https://recharts.org/)                                                                      |
+| **UI Primitives**      | [Radix UI](https://www.radix-ui.com/) encapsulated in project wrappers                                   |
+| **Weather Data**       | [WeatherAPI](https://www.weatherapi.com/) via secure server-side Route Handlers                          |
+| **Testing**            | [Vitest 5](https://vitest.dev/) (Unit/Coverage), [Cypress 16](https://www.cypress.io/) (E2E & Component) |
+| **Design System**      | [Storybook 10](https://storybook.js.org/) with axe-based a11y testing                                    |
+| **Deployment**         | [Vercel](https://vercel.com/)                                                                            |
 
 ---
 
@@ -142,23 +142,23 @@ Open [http://localhost:3000](http://localhost:3000) in your browser to view the 
 
 ## 🧞 Available Scripts
 
-| Command | Description |
-| :--- | :--- |
-| `npm run dev` | Starts the Next.js local development server at `localhost:3000`. |
-| `npm run build` | Compiles the optimized production application. |
-| `npm run start` | Runs the compiled production build locally. |
-| `npm run lint` | Checks TypeScript type integrity across the codebase (`tsc --noEmit`). |
-| `npm run test:unit` | Runs Vitest unit and integration test suites. |
-| `npm run test:watch` | Runs Vitest in interactive watch mode for active development. |
-| `npm run test:coverage` | Generates a detailed V8 code coverage report in `./coverage`. |
-| `npm run storybook` | Starts the local Storybook workbench server at `localhost:6006`. |
-| `npm run build-storybook`| Compiles the Storybook design system into static documentation. |
-| `npm run cypress:open` | Opens the interactive Cypress GUI runner. |
-| `npm run e2e` | Starts dev server and opens Cypress E2E test suite. |
-| `npm run e2e:headless` | Runs Cypress E2E test suite headlessly against local server. |
-| `npm run component` | Opens Cypress Component test runner interactively. |
-| `npm run component:headless` | Runs Cypress Component tests headlessly. |
-| `npm test` | Runs the comprehensive test suite (unit, coverage, component, E2E). |
+| Command                      | Description                                                            |
+| :--------------------------- | :--------------------------------------------------------------------- |
+| `npm run dev`                | Starts the Next.js local development server at `localhost:3000`.       |
+| `npm run build`              | Compiles the optimized production application.                         |
+| `npm run start`              | Runs the compiled production build locally.                            |
+| `npm run lint`               | Checks TypeScript type integrity across the codebase (`tsc --noEmit`). |
+| `npm run test:unit`          | Runs Vitest unit and integration test suites.                          |
+| `npm run test:watch`         | Runs Vitest in interactive watch mode for active development.          |
+| `npm run test:coverage`      | Generates a detailed V8 code coverage report in `./coverage`.          |
+| `npm run storybook`          | Starts the local Storybook workbench server at `localhost:6006`.       |
+| `npm run build-storybook`    | Compiles the Storybook design system into static documentation.        |
+| `npm run cypress:open`       | Opens the interactive Cypress GUI runner.                              |
+| `npm run e2e`                | Starts dev server and opens Cypress E2E test suite.                    |
+| `npm run e2e:headless`       | Runs Cypress E2E test suite headlessly against local server.           |
+| `npm run component`          | Opens Cypress Component test runner interactively.                     |
+| `npm run component:headless` | Runs Cypress Component tests headlessly.                               |
+| `npm test`                   | Runs the comprehensive test suite (unit, coverage, component, E2E).    |
 
 ---
 
